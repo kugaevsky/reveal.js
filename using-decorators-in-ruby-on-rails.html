@@ -146,6 +146,10 @@ class StringDecorator
     "I dunno!"
   end
 
+  def size
+    @string.size > 10 ? %(It's sooooo long) : 'It is short'
+  end
+
   def method_missing(method, *args, &block)
     @string.send(method, *args, &block)
   end
@@ -153,8 +157,23 @@ end
 							</code>
 						</pre>
 					</section>
-					<section data-background="images/ruby-decorator.png">
-						<h2>Live coding</h2>
+					<section>
+						<h2>Decorated object</h2>
+						<pre>
+							<code class="hljs ruby">
+# Initialize
+decorated_string = StringDecorator.new("Where I am?")
+
+# Decorator method
+decorated_string.answer => "I dunno!"
+
+# String method
+decorated_string.downcase => "where i am?"
+
+# Overridden method
+decorated_string.size => "It's sooooo long"
+							</code>
+						</pre>
 					</section>
 				</section>
 
@@ -201,7 +220,13 @@ end
 					</section>
 
 					<section data-background="images/ruby-decorator-2.png">
-						<h2>Live coding</h2>
+						<article style="background: rgba(0,0,0,.5); padding: 4rem">
+							<h2>Live coding</h2>
+
+							<p>
+								Learn some examples from <a href="https://github.com/drapergem/draper">https://github.com/drapergem/draper</a>
+							</p>
+						</article>
 					</section>
 				</section>
 
