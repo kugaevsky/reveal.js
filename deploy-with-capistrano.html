@@ -7,6 +7,7 @@
     <title>Выкладка без боли с Capistrano – Painless deployment with Capistrano</title>
 
     <meta name="description" content="Painless deployment with Capistrano.">
+
     <meta name="author" content="Nick Kugaevsky">
 
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -14,11 +15,12 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <link rel="stylesheet" href="css/reveal.min.css">
-    <link rel="stylesheet" href="css/theme/default.css" id="theme">
+    <link rel="stylesheet" href="bower_components/reveal.js/css/reveal.min.css">
+    <link rel="stylesheet" href="bower_components/reveal.js/css/theme/default.css" id="theme">
 
     <!-- For syntax highlighting -->
-    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <link rel="stylesheet" href="bower_components/reveal-highlight-themes/styles/monokai_sublime.css" id="highlight-theme">
+
 
     <!-- If the query includes 'print-pdf', include the PDF print sheet -->
     <script>
@@ -26,7 +28,7 @@
         var link = document.createElement( 'link' );
         link.rel = 'stylesheet';
         link.type = 'text/css';
-        link.href = 'css/print/pdf.css';
+        link.href = 'bower_components/reveal.js/css/print/pdf.css';
         document.getElementsByTagName( 'head' )[0].appendChild( link );
       }
     </script>
@@ -53,31 +55,29 @@
         </section>
 
         <section>
-          <section>
-            <h2>True old school</h2>
-            <ul>
-              <li>Rsync</li>
-              <li>SCP</li>
-              <li>FTP</li>
-            </ul>
+          <section data-markdown>
+            ## True old school
+
+            * Rsync
+            * SCP
+            * FTP
           </section>
 
-          <section>
-            <h2>Not so old</h2>
-            <ul>
-              <li>ssh → git pull</li>
-              <li><a href="http://www.fabfile.org/">Fabric</a></li>
-            </ul>
+          <section data-markdown>
+            ## Not so old
+
+            * ssh → git pull
+            * [Fabric](http://www.fabfile.org/)
           </section>
 
           <section data-background="images/space-monster-octopus.jpg">
-           <article style="background: rgba(0,0,0,.5); padding: 4rem">
-              <h2>MONSTAZ!</h2>
-              <ul>
-                <li><a href="http://puppetlabs.com/">Puppet</a></li>
-                <li><a href="https://www.chef.io/">Chef</a></li>
-                <li><a href="https://www.saltstack.com/">Salt</a></li>
-                <li><a href="http://www.ansible.com/">Ansible</a></li>
+           <article  data-markdown style="background: rgba(0,0,0,.5); padding: 4rem">
+              ## MONSTAZ!
+
+              * [Puppet](http://puppetlabs.com/)
+              * [Chef](https://www.chef.io/)
+              * [Salt](https://www.saltstack.com/)
+              * [Ansible](http://www.ansible.com/)
               </ul>
             </article>
           </section>
@@ -91,24 +91,25 @@
 
 
         <section>
-          <section>
-            <h2>Capistrano</h2>
-            <p>Capistrano is a remote server automation and deployment tool written in Ruby.</p>
-            <p>It supports the scripting and execution of arbitrary tasks, and includes a set of sane-default deployment workflows.</p>
+          <section data-markdown>
+            ## Capistrano
+
+            Capistrano is a remote server automation and deployment tool written in Ruby.
+
+            It supports the scripting and execution of arbitrary tasks, and includes a set of sane-default deployment workflows.
           </section>
 
           <section data-background="images/doge-capistrano.jpg">
-            <article style="background: rgba(0,0,0,.5); padding: 4rem">
-              <h2>Capistrano</h2>
-              <ul>
-                <li>Ruby</li>
-                <li>Open source</li>
-                <li>Expressive DSL</li>
-                <li>Simplicity</li>
-                <li>0-time deploy/rollback</li>
-                <li>Multistaging</li>
-                <li>Roles</li>
-              </ul>
+            <article data-markdown style="background: rgba(0,0,0,.5); padding: 4rem">
+              ## Capistrano
+
+              * Ruby
+              * Open source
+              * Expressive DSL
+              * Simity
+              * 0-time deploy/rollback
+              * Multistaging
+              * Roles
             </article>
           </section>
         </section>
@@ -266,21 +267,20 @@ end
           </section>
         </section>
 
-        <section>
-          <h2>Alternatives</h2>
-          <ul>
-            <li><a href="http://rubyhitsquad.com/Vlad_the_Deployer.htmlhttp://capistranorb.com/">Vlad the Deployer</a></li>
-            <li><a href="https://github.com/mina-deploy/mina">Mina</a></li>
+        <section data-markdown>
+          ## Alternatives
+
+          * [Vlad the Deployer](http://rubyhitsquad.com/Vlad_the_Deployer.html)
+          * [Mina](https://github.com/mina-deploy/mina)
           </ul>
         </section>
 
-        <section>
-          <h2>Reading</h2>
-          <ul>
-            <li><a href="http://capistranorb.com/">Capistrano official site</a></li>
-            <li><a href="https://github.com/capistrano/capistrano">Repository on GitHub</a></li>
-            <li><a href="https://www.digitalocean.com/community/tutorials/how-to-use-capistrano-to-automate-deployments-getting-started">How To Use Capistrano to Automate Deployments</a></li>
-          </ul>
+        <section data-markdown>
+          ## Reading
+
+          * [Capistrano official site](http://capistranorb.com/)
+          * [Repository on GitHub](https://github.com/capistrano/capistrano)
+          * [How To Use Capistrano to Automate Deployments](https://www.digitalocean.com/community/tutorials/how-to-use-capistrano-to-automate-deployments-getting-started)
         </section>
 
         <section data-background="images/golden-rails.jpg">
@@ -290,10 +290,7 @@ end
             <h3>Painless deployment with Capistrano</h3>
             <p><a href='http://slides.kugaevsky.ru/deploy-with-capistrano.html'>http://slides.kugaevsky.ru/</a></p>
             <p>
-              <small><a href="http://kugaevsky.ru">Николай Кугаевский</a> для rannts#3</small>
-            </p>
-            <p>
-              <small><a href="http://www.it52.info">www.it52.info</a></small>
+              <small><a href="http://kugaevsky.ru">Николай Кугаевский</a> для <a href="http://www.it52.info/events/2014-12-10-rannts-3">rannts#3</a></small>
             </p>
           </article>
         </section>
@@ -301,8 +298,8 @@ end
 
     </div>
 
-    <script src="lib/js/head.min.js"></script>
-    <script src="js/reveal.min.js"></script>
+    <script src="bower_components/reveal.js/lib/js/head.min.js"></script>
+    <script src="bower_components/reveal.js/js/reveal.min.js"></script>
 
     <script>
 
@@ -323,12 +320,12 @@ end
 
         // Optional libraries used to extend on reveal.js
         dependencies: [
-          { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
-          { src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-          { src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-          { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
-          { src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-          { src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+          { src: 'bower_components/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'bower_components/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'bower_components/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'bower_components/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'bower_components/reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'bower_components/reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
         ]
       });
 
