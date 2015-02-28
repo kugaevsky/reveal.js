@@ -217,7 +217,6 @@ gulp.task('css:compile'), () ->
   .pipe rename({suffix: '.min'})
   .pipe gulp.dest('assets/') // ← И снова положить
             </code></pre>
-            <p class="fragment"><a href="https://github.com/substack/stream-handbook">Stream Handbook</a> by <a href="https://twitter.com/substack"></a>@substack</p>
           </section>
 
           <section data-transition="slide">
@@ -236,6 +235,7 @@ gulp.task('css:compile'), () ->
           <section data-transition="slide">
             <h3>Под капотом</h3>
             <ul>
+              <li class="fragment">Streams — управление потоком данных</li>
               <li class="fragment"><a href="https://github.com/orchestrator/orchestrator">Orchestrator</a> – управление зависимостями и последовательностями задач</li>
               <li class="fragment"><a href="https://github.com/wearefractal/vinyl">Vynil</a> – работа с файловой системой</li>
             </ul>
@@ -398,6 +398,7 @@ gulp.task('css:revision'), () ->
 * [Javascript build system showdown](http://jbavari.github.io/JavascriptBuildSystemShowdown/#/1)
 * [Build Wars: Gulp vs Grunt](http://markdalgleish.github.io/presentation-build-wars-gulp-vs-grunt/)
 * [The Asset Pipeline](http://guides.rubyonrails.org/asset_pipeline.html)
+* [Replacing the Rails asset pipeline with Gulp](https://bugsnag.com/blog/replacing-the-rails-asset-pipeline-with-gulp)
         </section>
 
         <section data-background="images/double-gulp.jpg">
