@@ -172,12 +172,23 @@
             <h2>Gulp</h2>
 
             <ul>
-              <li class="fragment">Сборка с помощью потоков</li>
-              <li class="fragment">Code over configuration</li>
+              <li class="fragment">Текстовые потоки</li>
               <li class="fragment">Один плагин — одна задача</li>
+              <li class="fragment">Code over configuration</li>
               <li class="fragment">Простой API</li>
               <li class="fragment">Очень простой API</li>
             </ul>
+          </section>
+
+          <section data-transition="slide">
+            <h2>UNIX philosophy</h2>
+
+            <ul class="fragment">
+              <li>Пишите программы, которые делают что-то одно и делают это хорошо.</li>
+              <li>Пишите программы, которые бы работали вместе.</li>
+              <li>Пишите программы, которые бы поддерживали текстовые потоки, поскольку это универсальный интерфейс</li>
+            </ul>
+            <p class="fragment"><a href="https://ru.wikipedia.org/wiki/%D0%A4%D0%B8%D0%BB%D0%BE%D1%81%D0%BE%D1%84%D0%B8%D1%8F_UNIX"><i>Дуг Макилрой</i></a></p>
           </section>
 
           <section data-transition="slide">
@@ -229,19 +240,15 @@ gulp.task('css:compile'), () ->
             </ul>
           </section>
 
-          <section data-background="images/surprised-reaction-guy.png" data-background-transition="zoom" data-transition="zoom">
+          <section data-background="images/thats-all-folks.jpg" data-background-transition="zoom" data-transition="zoom">
           </section>
 
           <section data-transition="slide">
             <h3>Под капотом</h3>
             <ul>
-              <li class="fragment">Streams — управление потоком данных</li>
               <li class="fragment"><a href="https://github.com/orchestrator/orchestrator">Orchestrator</a> – управление зависимостями и последовательностями задач</li>
               <li class="fragment"><a href="https://github.com/wearefractal/vinyl">Vynil</a> – работа с файловой системой</li>
             </ul>
-          </section>
-
-          <section data-background="images/surprised-reaction-guy-left.png" data-background-transition="zoom" data-transition="zoom">
           </section>
         </section>
 
