@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>Gulp для сборки статики – Asset Pipeline with Gulp</title>
+
+    <meta name="description" content="Gulp для сборки статики – Asset Pipeline with Gulp">
+
+    <meta name="author" content="Nick Kugaevsky">
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="bower_components/reveal.js/css/reveal.css">
+    <link rel="stylesheet" href="bower_components/reveal.js/css/theme/beige.css" id="theme">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="bower_components/reveal-highlight-themes/styles/zenburn.css" id="highlight-theme">
+
+
+    <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+    <script>
+      if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = 'bower_components/reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="reveal">
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section data-background="images/gulp-intro.svg">
+          <article style="background: rgba(255,255,255,.5); padding: 4rem">
+            <h2>Галп для сборки статики</h2>
+            <h3>Assets Pipeline with Gulp</h3>
+            <p>
+              <small><a href="http://kugaevsky.ru">Николай Кугаевский</a> / <a href="http://dudes.io">dudes.io</a></small>
+            </p>
+          </article>
+        </section>
+
+        <section>
+          <section data-transition="slide">
+            <h2>Зачем собирать статику?</h2>
+
+            <h4 class="fragment">Во-первых, это красиво<h4>
+          </section>
+
+          <section data-transition="slide">
+            <h6>Зачем собирать статику</h6>
+
+            <ul>
+              <li class="fragment">Компиляция<br /><small>(вы пишете на чистом CSS/JS?)</small></li>
+              <li class="fragment">Универсальность<br /><small>(а префиксы вендоров помните?)</small></li>
+              <li class="fragment">Экономия соединений <br /><small>(их всё ещё 6-8 на хост)</small></li>
+              <li class="fragment">Объём данных <br /><small>(мобильные никто не отменял)</small></li>
+              <li class="fragment">Вечный кэш <br /><small>(проблема инвалидации решена!)</small></li>
+            </ul>
+          </section>
+
+           <section data-transition="slide">
+            <h6>Зачем собирать статику</h6>
+            <p>Где-то я это уже видел</p>
+            <p class="fragment">
+              <img src="images/ruby-on-rails.png" style="border:none;box-shadow:none" >
+              <br />
+              RUBY ON RAILS
+            </p>
+          </section>
+        </section>
+
+        <section>
+          <section data-transition="slide">
+            <h2>Чем собирать?</h2>
+
+            <h4 class="fragment">Хороший вопрос!<h4>
+          </section>
+
+          <section data-transition="slide">
+            <h6>Чем собирать?</h6>
+
+            <ul>
+              <li class="fragment"><a href="https://github.com/ruby/rake">Rake</a><small>ruby</small></li>
+              <li class="fragment"><a href="http://docs.pyinvoke.org/en/latest/#">Invoke</a><small>python</small></li>
+              <li class="fragment"><a href="http://robo.li/">Robo</a><small>PHP</small></li>
+              <li class="fragment">MSBuild<small>догадайтесь</small></li>
+              <li class="fragment"><a href="http://maven.apache.org/">Maven</a><small>Java</small></li>
+              <li class="fragment"><a href="http://www.gnu.org/software/make/">GNU make</a><small>hardcore</small></li>
+            </ul>
+          </section>
+
+          <section data-transition="slide">
+            <h6>Чем собирать?</h6>
+            <h2>Ближе к телу</h2>
+
+            <ul>
+              <li class="fragment"><a href="http://brunch.io/">Brunch</a> – январь 2011</li>
+              <li class="fragment"><a href="http://gruntjs.com/">Grunt</a> — март 2012</li>
+              <li class="fragment"><a href="http://gulpjs.com/">Gulp</a> — август 2012</li>
+              <li class="fragment"><a href="https://github.com/broccolijs/broccoli">Broccoli</a> — февраль 2014</li>
+              <li class="fragment"><a href="http://coffeescript.org/documentation/docs/cake.html">Cake</a></li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section data-background="images/all-runners.svg" data-transition="slide">
+          </section>
+
+          <section data-transition="slide">
+            <table>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>Plugins</th>
+                  <th>Speed</th>
+                  <th>Flexibility</th>
+                  <th>Scaffold</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Brunch</td>
+                  <td></td>
+                  <td>±</td>
+                  <td></td>
+                  <td>×</td>
+                </tr>
+                <tr>
+                  <td>Grunt</td>
+                  <td>×</td>
+                  <td></td>
+                  <td>±</td>
+                  <td>±</td>
+                </tr>
+                <tr>
+                  <td>Gulp</td>
+                  <td>×</td>
+                  <td>×</td>
+                  <td>×</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Broccoli</td>
+                  <td></td>
+                  <td></td>
+                  <td>±</td>
+                  <td>±</td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </section>
+
+        <section>
+          <section data-transition="slide">
+            <h2>Gulp</h2>
+
+            <ul>
+              <li class="fragment">Сборка с помощью потоков</li>
+              <li class="fragment">Code over configuration</li>
+              <li class="fragment">Один плагин — одна задача</li>
+              <li class="fragment">Простой API</li>
+              <li class="fragment">Очень простой API</li>
+            </ul>
+          </section>
+
+          <section data-transition="slide">
+            <h3>Gulpfile.coffee</h3>
+            <pre><code data-trim>
+gulp    = require 'gulp'
+sass    = require 'gulp-sass'
+prefix  = require 'gulp-autoprefixer'
+minify  = require 'gulp-minify-css'
+            </code></pre>
+
+            <pre class="fragment"><code data-trim>
+gulp.task('css:compile'), () ->
+  gulp.src('sass/app.sass')
+  .pipe sass()
+  .pipe prefix('last 2 versions')
+  .pipe minify()
+  .pipe gulp.dest('assets/')
+            </code></pre>
+
+            <pre class="fragment"><code>
+$ gulp css:compile
+            </code></pre>
+          </section>
+
+          <section data-transition="slide">
+            <h3>Потоки</h3>
+            <pre class="fragment"><code data-trim>
+gulp.task('css:compile'), () ->
+  gulp.src('sass/*.sass') // ← Взяли
+  // Покрутили-повертели
+  .pipe sass()
+  .pipe prefix('last 2 versions')
+  .pipe gulp.dest('assets/') // ← Положили
+  // Можем ещё покрутить-повертеть
+  .pipe minify()
+  .pipe rename({suffix: '.min'})
+  .pipe gulp.dest('assets/') // ← И снова положить
+            </code></pre>
+            <p class="fragment"><a href="https://github.com/substack/stream-handbook">Stream Handbook</a> by <a href="https://twitter.com/substack"></a>@substack</p>
+          </section>
+
+          <section data-transition="slide">
+            <h3>API</h3>
+            <ul>
+              <li>gulp.task   – описывает задачу</li>
+              <li>gulp.watch  — смотрит за файлами</li>
+              <li>gulp.src    — преобразует файлы в поток</li>
+              <li>gulp.dest   — преобразует поток в файлы</li>
+            </ul>
+          </section>
+
+          <section data-background="images/surprised-reaction-guy.png" data-background-transition="zoom" data-transition="zoom">
+          </section>
+
+          <section data-transition="slide">
+            <h3>Под капотом</h3>
+            <ul>
+              <li class="fragment"><a href="https://github.com/orchestrator/orchestrator">Orchestrator</a> – управление зависимостями и последовательностями задач</li>
+              <li class="fragment"><a href="https://github.com/wearefractal/vinyl">Vynil</a> – работа с файловой системой</li>
+            </ul>
+          </section>
+
+          <section data-background="images/surprised-reaction-guy-left.png" data-background-transition="zoom" data-transition="zoom">
+          </section>
+        </section>
+
+        <section>
+          <section data-transition="slide">
+            <h3>О чём, бишь, я?</h3>
+            <ul class="fragment">
+              <li>Компиляция</li>
+              <li>Универсальность</li>
+              <li>Экономия соединений</li>
+              <li>Объём данных</li>
+              <li>Вечный кэш</li>
+            </ul>
+            <hr class="fragment">
+            <ul>
+              <li class="fragment">Sass</li>
+              <li class="fragment">Coffeescript</li>
+            </ul>
+          </section>
+
+          <section data-transition="slide">
+            <h3>Компиляция: Sass → CSS</h3>
+            <p class="fragment">Ruby Sass vs. libsass</p>
+            <p class="fragment">Ноябрь 2014 — libsass научилась готовить Sass 3.0</p>
+            <p class="fragment">Разница в скорости компиляции ≈ 2,5 раза</p>
+          </section>
+
+          <section data-transition="slide">
+            <h3>Компиляция: Sass → CSS</h3>
+            <pre class="fragment"><code data-trim>
+sass
+  ├── elements
+  ├── forms
+  ├── grid
+  ├── typography
+  ├── _foundation.sass
+  ├── _reset.sass
+  └── app.sass
+            </code></pre>
+
+            <pre class="fragment"><code data-trim class="sass">
+// app.sass
+@import "reset"
+@import "foundation"
+@import "typography/typography"
+@import "elements/elements"
+@import "navigation/navigation"
+@import "grid/grid"
+            </code></pre>
+
+            <pre class="fragment"><code data-trim>
+// Gulpfile.coffee
+sass    = require 'gulp-sass'
+            </code></pre>
+          </section>
+
+          <section data-transition="slide">
+            <h3>Универсальность</h3>
+            <div class="fragment">
+              <h2><a href="https://github.com/postcss/autoprefixer">Autoprefixer</a></h2>
+              <img src="images/autoprefixer.svg" style="border:none;box-shadow:none;width:100px" />
+            </div>
+
+            <pre class="fragment"><code data-trim>
+// Gulpfile.coffee
+prefix    = require 'gulp-autoprefixer'
+            </code></pre>
+          </section>
+
+          <section data-transition="slide">
+            <h3>Объём данных</h3>
+            <p class="fragment"><img src="images/best-minifier.jpg" style="border:none;box-shadow:none;height:300px" ></p>
+            <p class="fragment"><a href="http://goalsmashers.github.io/css-minification-benchmark">CSS minification benchmark</a></p>
+            <p class="fragment"><a href="https://github.com/army8735/more">more-css</a></p>
+            <pre class="fragment"><code data-trim>
+// Gulpfile.coffee
+minify    = require 'gulp-more-css'
+            </code></pre>
+          </section>
+
+          <section data-transition="slide">
+            <h3>Вечный кэш</h3>
+            <ul>
+              <li class="fragment">styles.css → styles-be57b00b.css</li>
+              <li class="fragment">location ~ ^/assets/.*-([^.]+)\.(js|css)$ { expires max; }</li>
+            </ul>
+
+            <pre class="fragment"><code data-trim>
+// Gulpfile.coffee
+rev     = require 'gulp-rev'
+revCol  = require 'gulp-rev-collector'
+            </code></pre>
+          </section>
+
+          <section data-transition="slide">
+            <h3>Бесплатный бонус</h3>
+            <p class="fragment">А если ещё сжать?</p>
+            <p class="fragment"><a href="https://www.npmjs.com/package/node-zopfli">Zopfli</a></p>
+            <p class="fragment">location ~ ^/assets/.*-([^.]+)\.(js|css)$ { gzip_static on; }</p>
+
+            <pre class="fragment"><code data-trim>
+// Gulpfile.coffee
+zopfli  = require 'gulp-zopfli'
+            </code></pre>
+          </section>
+
+          <section data-transition="slide">
+            <pre><code data-trim>
+// Gulpfile.coffee
+sass    = require 'gulp-sass'
+prefix  = require 'gulp-autoprefixer'
+minify  = require 'gulp-more-css'
+rev     = require 'gulp-rev'
+revCol  = require 'gulp-rev-collector'
+zopfli  = require 'gulp-zopfli'
+rename  = require 'gulp-rename'
+
+gulp.task('css:compile'), () ->
+  gulp.src 'sass/app.sass'
+  .pipe sass()
+  .pipe prefix('last 2 versions')
+  .pipe minify()
+  .pipe rename({ suffix: '.min' })
+  .pipe gulp.dest('assets/')
+  .pipe zopfli()
+  .pipe gulp.dest('assets/')
+
+gulp.task('css:revision'), () ->
+  gulp.src 'assets/app.min.*'
+  .pipe rev()
+  .pipe gulp.dest('assets/')
+  .pipe rev.manifest()
+  .pipe gulp.dest('assets/')
+            </code></pre>
+          </section>
+
+          <section data-transition="slide">
+            <h3>Coffescript</h3>
+            <p class="fragment">А то же самое!</p>
+            <ul>
+              <li class="fragment">Компилируем</li>
+              <li class="fragment">Склеиваем</li>
+              <li class="fragment">Минифицируем</li>
+              <li class="fragment">Штампуем</li>
+              <li class="fragment">Сжимаем</li>
+            </ul>
+          </section>
+        </section>
+
+        <section data-markdown>
+### Тишина должна быть в библиотеке!
+
+* Можно отмотать назад — там действительно много полезных ссылок.
+* [Javascript build system showdown](http://jbavari.github.io/JavascriptBuildSystemShowdown/#/1)
+* [Build Wars: Gulp vs Grunt](http://markdalgleish.github.io/presentation-build-wars-gulp-vs-grunt/)
+* [The Asset Pipeline](http://guides.rubyonrails.org/asset_pipeline.html)
+        </section>
+
+        <section data-background="images/double-gulp.jpg">
+          <article style="background: rgba(255,255,255,.5); padding: 4rem">
+            <h2>Спасибо</h2>
+            <h3>Галп для сборки статики</h3>
+            <h3>Asset pipeline with Gulp</h3>
+            <p><a href='http://slides.kugaevsky.ru/gulp-assets-pipeline.html'>http://slides.kugaevsky.ru/</a></p>
+            <p>
+              <small><a href="http://kugaevsky.ru">Николай Кугаевский</a> (<a href="http://dudes.io">dudes.io</a>) для <a href="http://www.it52.info/events/2015-02-28-js-nn-1">JS NN #1</a></small>
+            </p>
+          </article>
+        </section>
+      </div>
+
+    </div>
+
+    <script src="bower_components/reveal.js/lib/js/head.min.js"></script>
+    <script src="bower_components/reveal.js/js/reveal.js"></script>
+
+    <script>
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'convex', // none/fade/slide/convex/concave/zoom
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'bower_components/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'bower_components/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'bower_components/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+          { src: 'bower_components/reveal.js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+          { src: 'bower_components/reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: 'bower_components/reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+
+  </body>
+</html>

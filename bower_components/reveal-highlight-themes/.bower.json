@@ -1,6 +1,6 @@
 {
   "name": "reveal-highlight-themes",
-  "version": "8.3.0",
+  "version": "8.4.0",
   "authors": [
     "Nils Winkler <nils@nilswinkler.com>"
   ],
@@ -25,16 +25,16 @@
     "tests"
   ],
   "devDependencies": {
-    "highlightjs": "=8.3.0"
+    "highlightjs": "=8.4.0"
   },
-  "_release": "8.3.0",
+  "_release": "8.4.0",
   "_resolution": {
     "type": "version",
-    "tag": "8.3.0",
-    "commit": "e8c9b77c5a056f4eb5c7f6e1639a911928fc3b0e"
+    "tag": "8.4.0",
+    "commit": "daf515dea8c3baf4218a2d4b9861279455d7acc5"
   },
   "_source": "git://github.com/nwinkler/reveal-highlight-themes.git",
-  "_target": "~8.3.0",
+  "_target": "~8.4.0",
   "_originalSource": "reveal-highlight-themes",
   "_direct": true
 }
