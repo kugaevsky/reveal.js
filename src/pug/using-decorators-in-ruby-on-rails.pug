@@ -1,0 +1,245 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title Наряжаем рельсу – Using decorators in Ruby on Rails
+    meta(name='description', content='Helpers sucks. Replace them from views with decorators.')
+    meta(name='author', content='Nick Kugaevsky')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-status-bar-style', content='black-translucent')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    link(rel='stylesheet', href='lib/reveal-js/css/reveal.css')
+    link#theme(rel='stylesheet', href='lib/reveal-js/css/theme/default.css')
+    // For syntax highlighting
+    link#highlight-theme(rel='stylesheet', href='lib/reveal-highlight-themes/styles/monokai_sublime.css')
+    // If the query includes 'print-pdf', include the PDF print sheet
+    script.
+      if( window.location.search.match( /print-pdf/gi ) ) {
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = 'lib/reveal-js/css/print/pdf.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    //if lt IE 9
+      script(src='lib/js/html5shiv.js')
+  body
+    .reveal
+      // Any section element inside of this container is displayed as a slide
+      .slides
+        section(data-background='images/rusted-rails.jpg')
+          h1 Наряжаем рельсу
+          h3 Using decorators in Ruby on Rails
+          p
+            small
+              a(href='http://kugaevsky.ru') Николай Кугаевский
+              |  /
+              a(href='http://twitter.com/kugaevsky') @kugaevsky
+        section
+          section
+            h2 Data in view layer
+            ul
+              li Ruby object
+              li Rails helpers
+              li Custom helpers
+              li Embed ruby code
+          section
+            h2 Смесь французского с нижегородским
+            p.fragment.grow(data-fragment-index='2')
+              | Ruby is about&nbsp;
+              strong.fragment.highlight-green(data-fragment-index='1') objects
+              |, not&nbsp;
+              strong.fragment.highlight-red(data-fragment-index='1') procedures
+            pre
+              code.hljs.ruby.
+                article
+                  h3
+                    = link_to post.title, post
+                    small< = post.user
+                  p = post.body
+
+                  - if user_signed_in? && current_user == post.user
+                    ul.button-group
+                      li = link_to_show(post)
+                      li = link_to 'Edit', edit_post_path(post), class: 'button alert tiny'
+                      li = link_to 'Destroy', post, data: {:confirm => 'Are you sure?'}, :method => :delete, class: 'button alert tiny'
+          section(data-background='images/truck-on-rail.jpg')
+            p Helpers smells like
+            h1 PHP
+        section(data-background='images/to-the-rescue.jpg')
+          h2 Decorator to the rescue
+        section
+          section
+            h2 Что такое? Кто такой
+            blockquote(cite='https://ru.wikipedia.org/wiki/%D0%94%D0%B5%D0%BA%D0%BE%D1%80%D0%B0%D1%82%D0%BE%D1%80_(%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD_%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F)')
+              p
+                strong Декоратор (англ. Decorator)
+                |  — структурный шаблон проектирования, предназначенный для динамического подключения дополнительного поведения к объекту. Шаблон Декоратор предоставляет гибкую альтернативу практике создания подклассов с целью расширения функциональности.
+            p
+              em
+                | –
+                a(href='https://ru.wikipedia.org/wiki/%D0%94%D0%B5%D0%BA%D0%BE%D1%80%D0%B0%D1%82%D0%BE%D1%80_(%D1%88%D0%B0%D0%B1%D0%BB%D0%BE%D0%BD_%D0%BF%D1%80%D0%BE%D0%B5%D0%BA%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D1%8F)') русская Wikipedia
+          section
+            h2 А по-русски?
+            blockquote(cite='http://en.wikipedia.org/wiki/Decorator_pattern')
+              p
+                strong Decorator pattern
+                |  — in object-oriented programming, the decorator pattern (also known as Wrapper, an alternative naming shared with the Adapter pattern) is a design pattern that allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class.
+            p
+              em
+                | –
+                a(href='http://en.wikipedia.org/wiki/Decorator_pattern')  понятная Wikipedia
+            p
+        section
+          section
+            h2 Singleton method
+            pre
+              code.hljs.ruby.
+                [1] pry(main)> question = "Where I am?"
+                => "Where I am?"
+                [2] pry(main)> question.define_singleton_method(:answer) { "GRRUG meetup!" }
+                => :answer
+                [3] pry(main)> question.answer
+                => "GRRUG meetup!"
+          section
+            h2 Decorator class
+            pre
+              code.hljs.ruby.
+                class StringDecorator
+                  def initialize(string = "")
+                    @string = string
+                  end
+
+                  def answer
+                    "I dunno!"
+                  end
+
+                  def size
+                    @string.size > 10 ? %(It's sooooo long) : 'It is short'
+                  end
+
+                  def method_missing(method, *args, &block)
+                    @string.send(method, *args, &block)
+                  end
+                end
+          section
+            h2 Decorated object
+            pre
+              code.hljs.ruby.
+                # Initialize
+                decorated_string = StringDecorator.new("Where I am?")
+
+                # Decorator method
+                decorated_string.answer => "I dunno!"
+
+                # String method
+                decorated_string.downcase => "where i am?"
+
+                # Overridden method
+                decorated_string.size => "It's sooooo long"`
+        section(data-background='images/keep-calm-and-find-gem.png')
+        section
+          section
+            h2 Draper
+            blockquote(cite='https://github.com/drapergem/draper')
+              p
+                | Draper adds an object-oriented layer of presentation logic to your Rails application.
+              p
+                | Without Draper, this functionality might have been tangled up in procedural helpers or adding bulk to your models. With Draper decorators, you can wrap your models with presentation-related logic to organise - and test - this layer of your app much more effectively.
+            p
+              em
+                | — gem&nbsp;
+                a(href='https://github.com/drapergem/draper') Draper
+                | &nbsp;on Github
+          section
+            h2 Draper install
+            pre
+              code.hljs.ruby.
+                # Gemfile
+                gem 'draper'
+
+                # app/controllers/posts_controller.rb
+                def show
+                  @post = Post.find(params[:id]).decorate
+                end
+
+                # app/decorators/posts_decorator.rb
+                class PostDecorator < Draper::Decorator
+                  delegate_all
+
+                  def created_at
+                    helpers.l(object.created_at)
+                  end
+                end
+          section(data-background='images/ruby-decorator-2.png')
+            article(style='background: rgba(0,0,0,.5); padding: 4rem')
+              h2 Live coding
+              p
+                | Learn some examples from&nbsp;
+                a(href='https://github.com/drapergem/draper') https://github.com/drapergem/draper
+        section
+          h2 Alternatives
+          ul
+            li
+              a(href='https://github.com/apotonick/cells') Cells
+              |  - widgets for rails
+            li
+              a(href='https://github.com/rf-/keynote') Keynote
+              |  - isn't real decorator
+            li
+              a(href='https://www.ruby-toolbox.com/categories/rails_presenters') Ruby toolbox
+              |  – find MOAR!
+        section
+          h2 Reading and watching
+          ul
+            li
+              a(href='http://nicksda.apotomo.de/2014/08/rails-misapprehensions-replace-helpers-with-view-models/') Rails Misapprehensions: Replace Helpers With View Models!
+              |  - article by Nick Sutterer
+            li
+              a(href='http://blog.steveklabnik.com/posts/2011-09-09-better-ruby-presenters') Better Ruby Presenters
+              |   - article by Steve Klabnik
+            li
+              a(href='http://youtu.be/VC5z8nadnQE?t=10m48s') Blow Up Your Views
+              |  - talk by Jeff Casimir
+            li
+              a(href='http://robots.thoughtbot.com/evaluating-alternative-decorator-implementations-in') Evaluating Alternative Decorator Implementations In Ruby
+              |  - article by Dan Croak
+            li
+              a(href='http://railscasts.com/episodes/286-draper') Draper
+              |  - screencast by Ryan Bates
+        section(data-background='images/golden-rails.jpg')
+          article(style='background: rgba(0,0,0,.5); padding: 4rem')
+            h2 Спасибо
+            h3 Наряжаем рельсу
+            h3 Using decorators in Ruby on Rails
+            p
+              a(href='http://slides.kugaevsky.ru/using-decorators-in-ruby-on-rails.html') http://slides.kugaevsky.ru/
+            p
+              small
+                a(href='http://kugaevsky.ru') Николай Кугаевский
+                |  для&nbsp;
+                a(href='https://telegram.me/nnrug') NNRUG
+            p
+              small
+                a(href='http://it52.info') it52.info
+    script(src='lib/reveal-js/lib/js/head.min.js')
+    script(src='lib/reveal-js/js/reveal.js')
+    script.
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal-js#configuration
+      Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+      transition: 'convex', // none/fade/slide/convex/concave/zoom
+      // Optional reveal-js plugins
+      dependencies: [
+      { src: 'lib/reveal-js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'lib/reveal-js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'lib/reveal-js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'lib/reveal-js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'lib/reveal-js/plugin/zoom-js/zoom.js', async: true },
+      { src: 'lib/reveal-js/plugin/notes/notes.js', async: true }
+      ]
+      });

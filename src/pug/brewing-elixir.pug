@@ -1,0 +1,205 @@
+doctype html
+head
+  meta(charset='utf-8')
+  title Варим Эликсир — Brewing Elixir
+  meta(name='description', content='Варим Эликсир — Brewing Elixir')
+  meta(name='author', content='Nick Kugaevsky')
+  meta(name='apple-mobile-web-app-capable', content='yes')
+  meta(name='apple-mobile-web-app-status-bar-style', content='black-translucent')
+  meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+  link(rel='stylesheet', href='lib/reveal-js/css/reveal.css')
+  link#theme(rel='stylesheet', href='lib/reveal-js/css/theme/beige.css')
+  style.
+    .reveal section img,
+    .reveal blockquote {
+    box-shadow: none;
+    border: none;
+    }
+  // For syntax highlighting
+  link#highlight-theme(rel='stylesheet', href='lib/reveal-highlight-themes/styles/zenburn.css')
+  // If the query includes 'print-pdf', include the PDF print sheet
+  script.
+    if( window.location.search.match( /print-pdf/gi ) ) {
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = 'lib/reveal-js/css/print/pdf.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+  //if lt IE 9
+    script(src='lib/js/html5shiv.js')
+.reveal
+  // Any section element inside of this container is displayed as a slide
+  .slides
+    section(data-background='images/minecraft-cauldron.jpg')
+      article(style='background: rgba(255,255,255,.5); padding: 4rem')
+        h2 Варим Эликсир
+        h3 Brewing Elixir
+        p
+          small
+            a(href='http://kugaevsky.ru') Николай Кугаевский
+            | /
+            a(href='http://dudes.io') dudes.io
+    section
+      section(data-transition='slide', data-markdown).
+        ## Plataformatec
+        * Devise
+        * Simple form
+        * Responders
+        * Ruby on Rails core
+        * …
+        https://github.com/plataformatec
+      section(data-transition='slide', data-markdown='')
+        | ## José Valim
+        | ![José Valim](images/jose-valim.jpeg)
+        | https://github.com/josevalim
+      section(data-transition='slide', data-markdown='')
+        | ## Historical note
+        | * Jan 9, 2011 – First commit
+        | * May 24, 2012 – First released v0.5.0
+        | * Sep 10, 2014 – First stable v1.0.0
+        | https://github.com/elixir-lang/elixir/
+    section
+      section(data-transition='slide')
+        img(src='images/elixir-logo.png')
+        blockquote
+          | Функциональный язык общего назначения, исполняемый в Erlang Virtual Machine (BEAM). Элексир создан на базе Erlang для разработки распределённых отказоустойчивых приложений, работающих в реальном времени.
+      section(data-transition='slide', data-markdown='')
+        | ![Elixir](images/elixir-logo.png)
+        | * Масштабируемость
+        | * Распределённость
+        | * Отказоустойчиовсть
+        | * Функциональность
+        | * Компиляция в байт-код
+        | * Расширяемость и DSL
+        | * Совместимость с Erlang (без потерь)
+    section
+      section(data-transition='slide', data-markdown='')
+        | ## Типизация
+        | iex> 1          # integer
+        | # => iex> 0x1F       # integer
+        | iex> 1.0        # float
+        | iex> true       # boolean
+        | iex> :atom      # atom / symbol
+        | iex> "elixir"   # string
+        | iex> [1, 2, 3]  # list
+        | iex> {1, 2, 3}  # tuple
+      section(data-transition='slide', data-markdown='')
+        | ## Операторы
+        | iex> 1 + 2      # => 3
+        | iex> 5 * 5      # => 25
+        | iex> 10 / 2     # => 5.0
+        | iex> div(10, 2) # => 5
+        | iex> div 10, 2  # => 5
+        | iex> rem 10, 3  # => 1
+        | iex> 0b1010     # => 10
+        | iex> 0o777      # => 511
+        | iex> 0x1F       # => 31
+      section(data-transition='slide', data-markdown='')
+        | ## Атомы
+        | iex> :hello             # => :hello
+        | iex> :hello == :world   # => false
+        | iex> true == :true      # => true
+        | iex> is_atom(false)     # => true
+        | iex> is_boolean(:false) # => true
+      section(data-transition='slide', data-markdown).
+        ## Строки
+        iex> "hellö"            # => "hellö"
+        iex> "hello
+        ...> world"             # => "hello\nworld"
+        iex> "hello\nworld"         # => "hello\nworld"
+        iex> IO.puts "hello\nworld"
+        world                   # => :ok
+        iex> is_binary("hellö")     # => true
+        iex> byte_size("hellö")     # => 6
+        iex> String.length("hellö") # => 5
+      section(data-transition='slide', data-markdown='')
+        | ## Списки
+        | iex> [1, 2, true, 3]    # => [1, 2, true, 3]
+        | iex> length [1, 2, 3]   # => 3
+        | iex> [1, 2, 3] ++ [4, 5, 6]   # => [1, 2, 3, 4, 5, 6]
+        | iex> [1, true, 2, false, 3, true] -- [true, false]    # => [1, 2, 3, true]
+        | iex> list = [1,2,3]
+        | iex> hd(list)     # => 1
+        | iex> tl(list)     # => [2, 3]
+      section(data-transition='slide', data-markdown='')
+        | ## Кортежи
+        | iex> {:ok, "hello"}               # => {:ok, "hello"}
+        | iex> tuple_size {:ok, "hello"}    # => 2
+        | iex> tuple = {:ok, "hello"}       # => {:ok, "hello"}
+        | iex> elem(tuple, 1)               # => "hello"
+        | iex> tuple_size(tuple)            # => 2
+        | iex> tuple = {:ok, "hello"}       # => {:ok, "hello"}
+        | iex> put_elem(tuple, 1, "world")  # => {:ok, "world"}
+        | iex> tuple                        # => {:ok, "hello"}
+    section
+      section(data-transition='slide', data-markdown='')
+        | ## Dynamo
+        | Sinatra-like framework
+        | https://github.com/dynamo/dynamo
+      section(data-transition='slide', data-markdown='')
+        | ## Dynamo
+        | defmodule ApplicationRouter do
+        | use Dynamo.Router
+        | prepare do
+        | conn.fetch([:cookies, :params])
+        | end
+        | get "/" do
+        | conn = conn.assign(:title, "Welcome to Dynamo!")
+        | render conn, "index.html"
+        | end
+        | get "/hello/world" do
+        | conn.resp(200, "Hello world")
+        | end
+        | end
+      section(data-transition='slide', data-markdown='')
+        | ## Phoenix
+        | Something like Rails
+        | http://www.phoenixframework.org/
+      section(data-transition='slide', data-markdown='')
+        | ## Phoenix
+        | defmodule PhoenixTest.PageController do
+        | use PhoenixTest.Web, :controller
+        | plug :action
+        | def index(conn, _params) do
+        | render conn, "index.html"
+        | end
+        | end
+    section(data-markdown='')
+      | ### Тишина должна быть в библиотеке!
+      | * [Elixir language](http://elixir-lang.org/)
+      | * [Elixir: An Erlang VM Language](https://speakerdeck.com/rssll/elixir-an-erlang-vm-language)
+    section
+      article(style='background: rgba(255,255,255,.5); padding: 4rem')
+        h2 Спасибо
+        h3 Варим Эликсир
+        h3 Brewing Elixir
+        p
+          a(href='http://slides.kugaevsky.ru/brewing-elixir.html') http://slides.kugaevsky.ru/
+        p
+          small
+            a(href='http://kugaevsky.ru') Николай Кугаевский
+            |  (
+            a(href='http://dudes.io') dudes.io
+            | ) для
+            a(href='http://www.it52.info/events/2015-03-21-nnrug-5') NNRUG #5
+script(src='lib/reveal-js/lib/js/head.min.js')
+script.
+  // Full list of configuration options available at:
+  // https://github.com/hakimel/reveal-js#configuration
+  Reveal.initialize({
+  controls: true,
+  progress: true,
+  history: true,
+  center: true,
+  transition: 'convex', // none/fade/slide/convex/concave/zoom
+  // Optional reveal-js plugins
+  dependencies: [
+  { src: 'lib/reveal-js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+  { src: 'lib/reveal-js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: 'lib/reveal-js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+  { src: 'lib/reveal-js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+  { src: 'lib/reveal-js/plugin/zoom-js/zoom.js', async: true },
+  { src: 'lib/reveal-js/plugin/notes/notes.js', async: true }
+  ]
+  });

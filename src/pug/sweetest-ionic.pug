@@ -1,0 +1,151 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title Сахар и автосборка в Ionic Framework
+    meta(name='description', content='Сахар и автосборка в Ionic Framework')
+    meta(name='author', content='Nick Kugaevsky')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-status-bar-style', content='black-translucent')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    link(rel='stylesheet', href='lib/reveal-js/css/reveal.css')
+    link#theme(rel='stylesheet', href='lib/reveal-js/css/theme/beige.css')
+    // For syntax highlighting
+    link#highlight-theme(rel='stylesheet', href='lib/reveal-highlight-themes/styles/zenburn.css')
+  body
+    .reveal
+      // Any section element inside of this container is displayed as a slide
+      .slides
+        section(data-background='images/gulp-intro.svg')
+          article(style='background: rgba(255,255,255,.5); padding: 4rem')
+            h2 Сахар и автосборка в <br>Ionic Framework
+            p
+              small
+                a(href='http://kugaevsky.ru') Николай Кугаевский
+                |  /
+                a(href='http://dudes.io') dudes.io
+        section
+          section(data-transition='slide')
+            h2 Сахар
+            h4.fragment Sass
+            h4.fragment
+              strike Jade&nbsp;
+              | Pug
+            h4.fragment Coffescript
+          section(data-transition='slide')
+            h2 Sass
+            p.fragment
+              img(src='images/sass.png', style='border:none;box-shadow:none')
+          section(data-transition='slide')
+            h2 Pug
+            p.fragment
+              img(src='images/pug.png', style='border:none;box-shadow:none')
+          section(data-transition='slide')
+            h2 Coffeescript
+            p.fragment
+              img(src='images/coffee.png', style='border:none;box-shadow:none')
+        section
+          section(data-transition='slide')
+            h6 Чем собирать?
+            ul
+              li.fragment
+                a(href='https://github.com/ruby/rake') Rake
+                small ruby
+              li.fragment
+                a(href='http://docs.pyinvoke.org/en/latest/#') Invoke
+                small python
+              li.fragment
+                a(href='http://robo.li/') Robo
+                small PHP
+              li.fragment
+                | MSBuild
+                small догадайтесь
+              li.fragment
+                a(href='http://maven.apache.org/') Maven
+                small Java
+              li.fragment
+                a(href='http://www.gnu.org/software/make/') GNU make
+                small hardcore
+
+          section(data-transition='slide')
+            h6 Чем собирать?
+            h2 Ближе к телу
+            ul
+              li.fragment
+                a(href='http://gulpjs.com/') Gulp
+              li.fragment
+                a(href='http://slides.kugaevsky.ru/gulp-assets-pipeline.html#/') Gulp для сборки статики
+
+          section
+            section(data-transition='slide')
+              h2 Gulpfile
+              p: img(src='images/gulp.png', style='border:none;box-shadow:none')
+
+
+        section
+          section(data-transition='slide')
+            h2
+              a(href="http://ionicframework.com/") Ionic Framework
+            ul
+              li.fragment Cordova
+              li.fragment Javascript
+              li.fragment CSS
+          section(data-transition='slide')
+            h2 Структура проекта
+            ul
+              p: img(src='images/ionic-dir.png', style='border:none;box-shadow:none')
+
+        section
+          section(data-transition='slide')
+            h2 Сборка
+            ul
+              li.fragment: a(href="https://cordova.apache.org/") Cordova
+              li.fragment: a(href="https://fastlane.tools/") Fastlane
+              li.fragment: a(href="http://electron.atom.io/") Electron
+              li.fragment Shell scripts
+
+          section(data-transition='slide')
+            h2 iOS
+            pre.fragment $ ionic build ios
+            pre.fragment $ ./bin/create-user-schemes.rb
+            pre.fragment $ gym --clean --include_bitcode --use_legacy_build_api
+            pre.fragment $ ./bin/upload-to-appblade.sh
+
+          section(data-transition='slide')
+            h2 OS X
+            pre.fragment $ electron-builder ./releases/PIK-darwin-x64/PIK.app --platform=osx --config=./electron.builder.json --out=./releases'
+
+        section
+          article(style='background: rgba(255,255,255,.5); padding: 4rem')
+            h2 Спасибо
+            h3 Сахар и автосборка в Ionic Framework
+            p
+              a(href='http://slides.kugaevsky.ru/gulp-assets-pipeline.html') http://slides.kugaevsky.ru/
+            p
+              small
+                a(href='http://kugaevsky.ru') Николай Кугаевский
+                |  (
+                a(href='https://dudes.io') dudes.io
+                | ) для&nbsp;
+                a(href='http://www.it52.info/events/2016-04-16-go-js-1') JS NN #3
+    script(src='lib/reveal-js/lib/js/head.min.js')
+    script(src='lib/reveal-js/js/reveal.js')
+    script.
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal-js#configuration
+      Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+      transition: 'convex', // none/fade/slide/convex/concave/zoom
+      // Optional reveal-js plugins
+      dependencies: [
+      { src: 'lib/reveal-js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'lib/reveal-js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'lib/reveal-js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'lib/reveal-js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'lib/reveal-js/plugin/zoom-js/zoom.js', async: true },
+      { src: 'lib/reveal-js/plugin/notes/notes.js', async: true }
+      ]
+      });

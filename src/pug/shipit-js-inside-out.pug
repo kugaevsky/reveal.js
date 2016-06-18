@@ -1,0 +1,230 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title Shipit.js inside out
+    meta(name='description', content='Сахар и автосборка в Ionic Framework')
+    meta(name='author', content='Nick Kugaevsky')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-status-bar-style', content='black-translucent')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    link(rel='stylesheet', href='lib/reveal-js/css/reveal.css')
+    link#theme(rel='stylesheet', href='lib/reveal-js/css/theme/beige.css')
+    // For syntax highlighting
+    link#highlight-theme(rel='stylesheet', href='lib/reveal-highlight-themes/styles/zenburn.css')
+  body
+    .reveal
+      // Any section element inside of this container is displayed as a slide
+      .slides
+        section(data-background="images/shipit-intro.jpg")
+          //- article(style='background-color: rgba(255, 255, 255, .5); padding: 4rem')
+          article(style='background-color: rgba(255, 255, 255, .5); padding: 4rem')
+            h2 Shipit.js inside out
+            h3 Препарируем — шипит
+            p
+              small
+                a(href='http://kugaevsky.ru') Николай Кугаевский
+                |  /
+                a(href='http://dudes.io') dudes.io
+        section
+          section(data-transition='slide')
+            h2 Что такое, кто такой?
+            p <a href="https://github.com/shipitjs/shipit">Shipit</a> was built to be a <a href="http://capistranorb.com/">Capistrano</a> alternative for people who don't know ruby, or who experienced some issues with it. If you want to write tasks in JavaScript and enjoy the node ecosystem, Shipit is also for you.
+            hr
+            p: small: a(href="/deploy-with-capistrano.html") Выкладка без боли с Capistrano
+          section(data-transition='slide')
+            h2 Под капотом
+            ul
+              li: a(href="https://github.com/robrich/orchestrator") Orchestrator
+              li: a(href="https://github.com/shipitjs/ssh-pool") SSH pool
+              li Code over configuration
+            hr
+            p: small: a(href="/gulp-assets-pipeline.html") Gulp для сборки статики
+
+        section
+          section(data-transition='slide' data-markdown).
+            ## API
+            * Tasks
+            * Commands
+            * Events
+            * Utils
+          section(data-transition='slide')
+            h2 Tasks
+            pre
+              code.hljs.javascript.
+                shipit.task(name, [deps], fn)     // create async task
+                shipit.blTask(name, [deps], fn)   // create sync task
+                shipit.start(tasks)               // start task(s)
+          section(data-transition='slide')
+            h2 Commands
+            pre
+              code.hljs.javascript.
+                shipit.local(command, [options], [callback])
+                // run command locally
+
+                shipit.remote(command, [options], [callback])
+                // run command remotely
+          section(data-transition='slide')
+            h2 Events
+            pre
+              code.hljs.javascript.
+                shipit.emit(name)     // emit custom event
+                shipit.on(name, fn)   // listen to event
+          section(data-transition='slide')
+            h2 Utils
+            pre
+              code.hljs.javascript.
+                shipit.remoteCopy(src, dest, [options], [callback])
+                // copy from a local path to a remote dest path
+
+                shipit.log('hello %s', 'world')
+                // the same as `console.log`
+
+        section
+          section(data-transition='slide')
+            h2 Configuration
+            p shipitfile.js
+
+          section(data-transition='slide')
+            h2 Default
+            pre
+              code.hljs.coffeescript.
+                shipit.initConfig
+                  default:
+                    workspace: '/tmp/slides.kugaevsky.ru'
+                    deployTo: '/var/www/slides.kugaevsky.ru'
+                    repositoryUrl: 'git@github.com:kugaevsky/slides.kugaevsky.ru.git'
+                    ignores: ['.git', 'node_modules']
+                    dirToCopy: 'public'
+                    branch: 'master'
+                    shallowClone: false
+                    rsync: ['--del']
+                    keepReleases: 5
+                    deleteOnRollback: false
+                    key: '/path/to/key'
+          section(data-transition='slide')
+            h2 Environments
+            pre
+              code.hljs.coffeescript.
+                shipit.initConfig
+                  default: #...
+                  staging:
+                    branch: 'staging'
+                    deployTo: '/var/www/beta.slides.kugaevsky.ru'
+                  production:
+                    servers: 'nick@kugaevsky.ru'
+
+          section(data-transition='slide')
+            h2 All together
+            pre
+              code.hljs.coffeescript.
+                module.exports = (shipit) ->
+                  require('shipit-deploy') shipit
+                  shipit.initConfig
+                      default:
+                        workspace: '/tmp/slides.kugaevsky.ru'
+                        deployTo: '/var/www/slides.kugaevsky.ru'
+                        repositoryUrl: 'git@github.com:kugaevsky/slides.kugaevsky.ru.git'
+                        dirToCopy: 'public'
+                        branch: 'master'
+                        keepReleases: 5
+                      production:
+                        servers: 'nick@kugaevsky.ru'
+                        nginx:
+                          server: 'slides.kugaevsky.ru'
+                          port: 80
+
+        section
+          section(data-transition='slide' data-markdown).
+            ## Deploy flow (1/2)
+            * **deploy:init**
+              * Emit event "deploy".
+            * **deploy:fetch**
+              * Create workspace.
+              * Initialize repository.
+              * Add remote.
+              * Fetch repository.
+              * Checkout commit-ish.
+              * Merge remote branch in local branch.
+              * Emit event "fetched".
+
+          section(data-transition='slide' data-markdown).
+            ## Deploy flow (2/2)
+            * **deploy:update**
+              * Create and define release path.
+              * Remote copy project.
+              * Emit event "updated".
+            * **deploy:publish**
+              * Update symlink.
+              * Emit event "published".
+            * **deploy:clean**
+              * Remove old releases.
+              * Emit event "cleaned".
+            * **deploy:finish**
+              * Emit event "deployed".
+
+          section(data-transition='slide' data-markdown).
+            ## Rollback flow
+            * **rollback:init**
+              * Define release path.
+              * Emit event "rollback".
+            * **deploy:publish**
+              * Update symlink.
+              * Emit event "published".
+            * **deploy:clean**
+              * Remove old releases.
+              * Emit event "cleaned".
+            * **rollback:finish**
+              * Emit event "rollbacked".
+
+          section(data-transition='slide' data-markdown).
+            ## Pending
+            * **pending:log**
+              * Log pending commits (diff between HEAD and currently deployed revision) to console.
+
+        section(data-markdown).
+          ## Variables – Events
+
+          * **shipit.config.*** – `deploy:init`
+          * **shipit.repository** – `deploy:fetch`
+          * **shipit.releaseDirname** – `deploy:update`, `rollback:init`
+          * **shipit.releasesPath** –  `deploy:init`, `rollback:init`, `pending:log`
+          * **shipit.releasePath** – `deploy:update`, `rollback:init`
+          * **shipit.currentPath** – `deploy:init`, `rollback:init`, `pending:log`
+
+        section
+          article(style='background: rgba(255,255,255,.5); padding: 4rem')
+            h2 Спасибо
+            h3 Shipit.js inside out
+            h3 Препарируем — шипит
+            p
+              a(href='http://slides.kugaevsky.ru/shipit-js-inside-out.html') http://slides.kugaevsky.ru/
+            p
+              small
+                a(href='http://kugaevsky.ru') Николай Кугаевский
+                |  (
+                a(href='https://dudes.io') dudes.io
+                | ) для&nbsp;
+                a(href='http://www.it52.info/events/2016-06-17-devops-nn-1') DevOps NN #1
+
+    script(src='lib/reveal-js/lib/js/head.min.js')
+    script(src='lib/reveal-js/js/reveal.js')
+    script.
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal-js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'convex', // none/fade/slide/convex/concave/zoom
+        // Optional reveal-js plugins
+        dependencies: [
+        { src: 'lib/reveal-js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'lib/reveal-js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'lib/reveal-js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'lib/reveal-js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'lib/reveal-js/plugin/zoom-js/zoom.js', async: true },
+        { src: 'lib/reveal-js/plugin/notes/notes.js', async: true }
+        ]
+      });

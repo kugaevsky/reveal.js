@@ -1,0 +1,304 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title Gulp для сборки статики – Asset Pipeline with Gulp
+    meta(name='description', content='Gulp для сборки статики – Asset Pipeline with Gulp')
+    meta(name='author', content='Nick Kugaevsky')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-status-bar-style', content='black-translucent')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    link(rel='stylesheet', href='lib/reveal-js/css/reveal.css')
+    link#theme(rel='stylesheet', href='lib/reveal-js/css/theme/beige.css')
+    // For syntax highlighting
+    link#highlight-theme(rel='stylesheet', href='lib/reveal-highlight-themes/styles/zenburn.css')
+    // If the query includes 'print-pdf', include the PDF print sheet
+    script.
+      if( window.location.search.match( /print-pdf/gi ) ) {
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = 'lib/reveal-js/css/print/pdf.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    //if lt IE 9
+      script(src='lib/js/html5shiv.js')
+  body
+    .reveal
+      // Any section element inside of this container is displayed as a slide
+      .slides
+        section(data-background='images/gulp-intro.svg')
+          article(style='background: rgba(255,255,255,.5); padding: 4rem')
+            h2 Галп для сборки статики
+            h3 Assets Pipeline with Gulp
+            p
+              small
+                a(href='http://kugaevsky.ru') Николай Кугаевский
+                |  /
+                a(href='http://dudes.io') dudes.io
+        section
+          section(data-transition='slide')
+            h2 Зачем собирать статику?
+            h4.fragment
+              | Во-первых, это красиво
+              h4
+          section(data-transition='slide')
+            h6 Зачем собирать статику
+            ul
+              li.fragment
+                | Компиляция
+                br
+                small (вы пишете на чистом CSS/JS?)
+              li.fragment
+                | Универсальность
+                br
+                small (а префиксы вендоров помните?)
+              li.fragment
+                | Экономия соединений
+                br
+                small (их всё ещё 6-8 на хост)
+              li.fragment
+                | Объём данных
+                br
+                small (мобильные никто не отменял)
+              li.fragment
+                | Вечный кэш
+                br
+                small (проблема инвалидации решена!)
+          section(data-transition='slide')
+            h6 Зачем собирать статику
+            p Где-то я это уже видел
+            p.fragment
+              img(src='images/ruby-on-rails.png', style='border:none;box-shadow:none')
+              br
+              |               RUBY ON RAILS
+        section
+          section(data-transition='slide')
+            h2 Чем собирать?
+            h4.fragment
+              | Хороший вопрос!
+              h4
+          section(data-transition='slide')
+            h6 Чем собирать?
+            ul
+              li.fragment
+                a(href='https://github.com/ruby/rake') Rake
+                small ruby
+              li.fragment
+                a(href='http://docs.pyinvoke.org/en/latest/#') Invoke
+                small python
+              li.fragment
+                a(href='http://robo.li/') Robo
+                small PHP
+              li.fragment
+                | MSBuild
+                small догадайтесь
+              li.fragment
+                a(href='http://maven.apache.org/') Maven
+                small Java
+              li.fragment
+                a(href='http://www.gnu.org/software/make/') GNU make
+                small hardcore
+          section(data-transition='slide')
+            h6 Чем собирать?
+            h2 Ближе к телу
+            ul
+              li.fragment
+                a(href='http://brunch.io/') Brunch
+                |  – январь 2011
+              li.fragment
+                a(href='http://gruntjs.com/') Grunt
+                |  — март 2012
+              li.fragment
+                a(href='http://gulpjs.com/') Gulp
+                |  — август 2012
+              li.fragment
+                a(href='https://github.com/broccolijs/broccoli') Broccoli
+                |  — февраль 2014
+              li.fragment
+                a(href='http://coffeescript.org/documentation/docs/cake.html') Cake
+        section
+          section(data-background='images/all-runners.svg', data-transition='slide')
+          section(data-transition='slide')
+            table
+              thead
+                tr
+                  th
+                  th Plugins
+                  th Speed
+                  th Flexibility
+                  th Scaffold
+              tbody
+                tr
+                  td Brunch
+                  td
+                  td ±
+                  td
+                  td ×
+                tr
+                  td Grunt
+                  td ×
+                  td
+                  td ±
+                  td ±
+                tr
+                  td Gulp
+                  td ×
+                  td ×
+                  td ×
+                  td
+                tr
+                  td Broccoli
+                  td
+                  td
+                  td ±
+                  td ±
+        section
+          section(data-transition='slide')
+            h2 Gulp
+            ul
+              li.fragment Текстовые потоки
+              li.fragment Один плагин — одна задача
+              li.fragment Code over configuration
+              li.fragment Простой API
+              li.fragment Очень простой API
+          section(data-transition='slide')
+            h2 UNIX philosophy
+            ul.fragment
+              li Пишите программы, которые делают что-то одно и делают это хорошо.
+              li Пишите программы, которые бы работали вместе.
+              li
+                | Пишите программы, которые бы поддерживали текстовые потоки, поскольку это универсальный интерфейс
+            p.fragment
+              a(href='https://ru.wikipedia.org/wiki/%D0%A4%D0%B8%D0%BB%D0%BE%D1%81%D0%BE%D1%84%D0%B8%D1%8F_UNIX')
+                i Дуг Макилрой
+          section(data-transition='slide')
+            h3 Gulpfile.coffee
+            pre.
+            pre.fragment.
+            pre.fragment.
+          section(data-transition='slide')
+            h3 Потоки
+            pre.fragment.
+          section(data-transition='slide')
+            h3 API
+            ul
+              li gulp.task   – описывает задачу
+              li gulp.watch  — смотрит за файлами
+              li gulp.src    — преобразует файлы в поток
+              li gulp.dest   — преобразует поток в файлы
+          section(data-background='images/thats-all-folks.jpg', data-background-transition='zoom', data-transition='zoom')
+          section(data-transition='slide')
+            h3 Под капотом
+            ul
+              li.fragment
+                a(href='https://github.com/orchestrator/orchestrator') Orchestrator
+                |  – управление зависимостями и последовательностями задач
+              li.fragment
+                a(href='https://github.com/wearefractal/vinyl') Vynil
+                |  – работа с файловой системой
+        section
+          section(data-transition='slide')
+            h3 О чём, бишь, я?
+            ul.fragment
+              li Компиляция
+              li Универсальность
+              li Экономия соединений
+              li Объём данных
+              li Вечный кэш
+            hr.fragment
+            ul
+              li.fragment Sass
+              li.fragment Coffeescript
+          section(data-transition='slide')
+            h3 Компиляция: Sass → CSS
+            p.fragment Ruby Sass vs. libsass
+            p.fragment Ноябрь 2014 — libsass научилась готовить Sass 3.0
+            p.fragment Разница в скорости компиляции ≈ 2,5 раза
+          section(data-transition='slide')
+            h3 Компиляция: Sass → CSS
+            pre.fragment.
+            pre.fragment.
+            pre.fragment.
+          section(data-transition='slide')
+            h3 Универсальность
+            .fragment
+              h2
+                a(href='https://github.com/postcss/autoprefixer') Autoprefixer
+              img(src='images/autoprefixer.svg', style='border:none;box-shadow:none;width:100px')
+            pre.fragment.
+          section(data-transition='slide')
+            h3 Объём данных
+            p.fragment
+              img(src='images/best-minifier.jpg', style='border:none;box-shadow:none;height:300px')
+            p.fragment
+              a(href='http://goalsmashers.github.io/css-minification-benchmark') CSS minification benchmark
+            p.fragment
+              a(href='https://github.com/army8735/more') more-css
+            pre.fragment.
+          section(data-transition='slide')
+            h3 Вечный кэш
+            ul
+              li.fragment styles.css → styles-be57b00b.css
+              li.fragment location ~ ^/assets/.*-([^.]+)\.(js|css)$ { expires max; }
+            pre.fragment.
+          section(data-transition='slide')
+            h3 Бесплатный бонус
+            p.fragment А если ещё сжать?
+            p.fragment
+              a(href='https://www.npmjs.com/package/node-zopfli') Zopfli
+            p.fragment location ~ ^/assets/.*-([^.]+)\.(js|css)$ { gzip_static on; }
+            pre.fragment.
+          section(data-transition='slide')
+            pre.
+          section(data-transition='slide')
+            h3 Coffescript
+            p.fragment А то же самое!
+            ul
+              li.fragment Компилируем
+              li.fragment Склеиваем
+              li.fragment Минифицируем
+              li.fragment Штампуем
+              li.fragment Сжимаем
+        section(data-markdown='')
+          | ### Тишина должна быть в библиотеке!
+          | * Можно отмотать назад — там действительно много полезных ссылок.
+          | * [Javascript build system showdown](http://jbavari.github.io/JavascriptBuildSystemShowdown/#/1)
+          | * [Build Wars: Gulp vs Grunt](http://markdalgleish.github.io/presentation-build-wars-gulp-vs-grunt/)
+          | * [The Asset Pipeline](http://guides.rubyonrails.org/asset_pipeline.html)
+          | * [Replacing the Rails asset pipeline with Gulp](https://bugsnag.com/blog/replacing-the-rails-asset-pipeline-with-gulp)
+        section(data-background='images/double-gulp.jpg')
+          article(style='background: rgba(255,255,255,.5); padding: 4rem')
+            h2 Спасибо
+            h3 Галп для сборки статики
+            h3 Asset pipeline with Gulp
+            p
+              a(href='http://slides.kugaevsky.ru/gulp-assets-pipeline.html') http://slides.kugaevsky.ru/
+            p
+              small
+                a(href='http://kugaevsky.ru') Николай Кугаевский
+                |  (
+                a(href='http://dudes.io') dudes.io
+                | ) для&nbsp;
+                a(href='http://www.it52.info/events/2015-02-28-js-nn-1') JS NN #1
+    script(src='lib/reveal-js/lib/js/head.min.js')
+    script(src='lib/reveal-js/js/reveal.js')
+    script.
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal-js#configuration
+      Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+      transition: 'convex', // none/fade/slide/convex/concave/zoom
+      // Optional reveal-js plugins
+      dependencies: [
+      { src: 'lib/reveal-js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'lib/reveal-js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'lib/reveal-js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'lib/reveal-js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'lib/reveal-js/plugin/zoom-js/zoom.js', async: true },
+      { src: 'lib/reveal-js/plugin/notes/notes.js', async: true }
+      ]
+      });

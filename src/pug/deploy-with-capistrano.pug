@@ -1,0 +1,237 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title Выкладка без боли с Capistrano – Painless deployment with Capistrano
+    meta(name='description', content='Painless deployment with Capistrano.')
+    meta(name='author', content='Nick Kugaevsky')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-status-bar-style', content='black-translucent')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    link(rel='stylesheet', href='lib/reveal-js/css/reveal.css')
+    link#theme(rel='stylesheet', href='lib/reveal-js/css/theme/default.css')
+    // For syntax highlighting
+    link#highlight-theme(rel='stylesheet', href='lib/reveal-highlight-themes/styles/monokai_sublime.css')
+    // If the query includes 'print-pdf', include the PDF print sheet
+    script.
+      if( window.location.search.match( /print-pdf/gi ) ) {
+      var link = document.createElement( 'link' );
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = 'lib/reveal-js/css/print/pdf.css';
+      document.getElementsByTagName( 'head' )[0].appendChild( link );
+      }
+    //if lt IE 9
+      script(src='lib/js/html5shiv.js')
+  body
+    .reveal
+      // Any section element inside of this container is displayed as a slide
+      .slides
+        section(data-background='images/capistrano-seaside.jpg')
+          article(style='background: rgba(0,0,0,.5); padding: 4rem')
+            h1 Выкладка без боли с Capistrano
+            h3 Painless deployment with Capistrano
+            p
+              small
+                a(href='http://kugaevsky.ru') Николай Кугаевский
+                |  /
+                a(href='http://twitter.com/kugaevsky') @kugaevsky
+        section
+          section(data-markdown).
+            ## True old school
+            * Rsync
+            * SCP
+            * FTP
+          section(data-markdown).
+            ## Not so old
+            * ssh → git pull
+            * [Fabric](http://www.fabfile.org/)
+          section(data-background='images/space-monster-octopus.jpg')
+            article(data-markdown, style='background: rgba(0,0,0,.5); padding: 4rem').
+              ## MONSTAZ!
+              * [Puppet](http://puppetlabs.com/)
+              * [Chef](https://www.chef.io/)
+              * [Salt](https://www.saltstack.com/)
+              * [Ansible](http://www.ansible.com/)
+        section(data-background='images/keep-calm-and-ship-it.png')
+          article(style='background: rgba(0,0,0,.5); padding: 4rem')
+            h2 Capistrano to the rescue
+        section
+          section(data-markdown).
+            ## Capistrano
+            Capistrano is a remote server automation and deployment tool written in Ruby.
+            It supports the scripting and execution of arbitrary tasks, and includes a set of sane-default deployment workflows.
+          section(data-background='images/doge-capistrano.jpg')
+            article(data-markdown, style='background: rgba(0,0,0,.5); padding: 4rem').
+              ## Capistrano
+              * Ruby
+              * Open source
+              * Expressive DSL
+              * Simity
+              * 0-time deploy/rollback
+              * Multistaging
+              * Roles
+        section
+          section
+            h2 Install and init
+            pre
+              code.hljs.ruby.
+                $ cd my_perfect_app
+                $ gem install capistrano
+                $ cap install
+          section
+            h2 Config
+            pre
+              code.hljs.ruby.
+                # config/deploy.rb
+                set :application, 'slides'
+                set :repo_url, 'git@github.com:kugaevsky/slides.git'
+
+                # config/deploy/staging.rb
+                role :app, %w{nick@kugaevsky.ru}
+                set :deploy_to, '/home/kugaevsky/www/slides.kugaevsky.ru'
+                set :user, 'nick'
+        section
+          section
+            h2 Anatomy local
+            pre
+              code.hljs.ruby.
+                my_perfect_app
+                ├── Capfile
+                ├── config
+                │   ├── deploy
+                │   │   ├── production.rb
+                │   │   ├── staging.rb
+                │   │   └── ...
+                │   └── deploy.rb
+                └── lib
+                    └── capistrano
+                            └── tasks
+          section
+            h2 Anatomy host
+            pre
+              code.hljs.ruby.
+                my_perfect_app
+                ├── current → ../releases/20141209222103
+                ├── releases
+                │   ├── 20141209220703
+                │   ├── 20141209222103
+                │   └── ...
+                ├── repo
+                │   ├── branches
+                │   ├── config
+                │   ├── description
+                │   └── ...
+                └── shared
+                    ├── node_modules
+                    ├── uploads
+                    ├── vendor
+                    └── ...
+        section
+          section
+            h2 Deploy Flow
+            pre
+              code.hljs.ruby.
+                deploy:starting    # start a deployment, make sure everything is ready
+                deploy:started     # started hook (for custom tasks)
+                deploy:updating    # update server(s) with a new release
+                deploy:updated     # updated hook
+                deploy:publishing  # publish the new release
+                deploy:published   # published hook
+                deploy:finishing   # finish the deployment, clean up everything
+                deploy:finished    # finished hook
+          section
+            h2 Rollback Flow
+            pre
+              code.hljs.ruby.
+                deploy:starting
+                deploy:started
+                deploy:reverting           # revert server(s) to previous release
+                deploy:reverted            # reverted hook
+                deploy:publishing
+                deploy:published
+                deploy:finishing_rollback  # finish the rollback, clean up everything
+                deploy:finished
+        section
+          section
+            h2 Plugins!
+            pre
+              code.hljs.ruby.
+                # Capfile
+                require 'capistrano/rvm'
+                require 'capistrano/rbenv'
+                require 'capistrano/chruby'
+                require 'capistrano/bundler'
+                require 'capistrano/rails/assets'
+                require 'capistrano/rails/migrations'
+          section
+            h2 Real world example
+            pre
+              code.hljs.ruby.
+                # config/deploy.rb
+                desc 'Create symlinks for npm modules'
+                task :npm do
+                  on roles(:app) do
+                    execute "ln -nfs #{shared_path}/node_modules #{release_path}/node_modules"
+                  end
+                end
+
+                desc 'Install npm modules'
+                task :npm do
+                  on roles(:app) do
+                    execute "cd #{release_path} && npm install"
+                  end
+                end
+
+                desc 'Compile assets'
+                task :compile_assets do
+                  on roles(:app) do
+                    execute "cd #{release_path} && #{shared_path}/node_modules/.bin/gulp compile:production"
+                  end
+                end
+          section
+            img(src='images/i-ship-what-i-want.gif', alt='I ship what I want')
+        section(data-markdown).
+          ## Alternatives
+          * [Vlad the Deployer](http://rubyhitsquad.com/Vlad_the_Deployer.html) – Ruby
+          * [Mina](https://github.com/mina-deploy/mina) – Ruby
+          * [Shipit.js](https://github.com/shipitjs/shipit) – Javascript
+          * [Rocketeer](http://rocketeer.autopergamene.eu/) – PHP
+        section(data-markdown).
+          ## Reading
+          * [Capistrano official site](http://capistranorb.com/)
+          * [Repository on GitHub](https://github.com/capistrano/capistrano)
+          * [How To Use Capistrano to Automate Deployments](https://www.digitalocean.com/community/tutorials/how-to-use-capistrano-to-automate-deployments-getting-started)
+        section(data-background='images/golden-rails.jpg')
+          article(style='background: rgba(0,0,0,.5); padding: 4rem')
+            h2 Спасибо
+            h3 Выкладка без боли с Capistrano
+            h3 Painless deployment with Capistrano
+            p
+              a(href='http://slides.kugaevsky.ru/deploy-with-capistrano.html') http://slides.kugaevsky.ru/
+            p
+              small
+                a(href='http://dudes.io') Николай Кугаевский
+                |  для&nbsp;
+                a(href='http://www.it52.info/events/2014-12-10-rannts-3') rannts#3
+    script(src='lib/reveal-js/lib/js/head.min.js')
+    script(src='lib/reveal-js/js/reveal.js')
+    script.
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal-js#configuration
+      Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+      transition: 'convex', // none/fade/slide/convex/concave/zoom
+      // Optional reveal-js plugins
+      dependencies: [
+      { src: 'lib/reveal-js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'lib/reveal-js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'lib/reveal-js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'lib/reveal-js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'lib/reveal-js/plugin/zoom-js/zoom.js', async: true },
+      { src: 'lib/reveal-js/plugin/notes/notes.js', async: true }
+      ]
+      });
