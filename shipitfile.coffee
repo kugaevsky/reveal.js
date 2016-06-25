@@ -4,7 +4,7 @@ module.exports = (shipit) ->
 
   shipit.initConfig
       default:
-        workspace: '/tmp/slides.kugaevsky.ru'
+        workspace: './build'
         deployTo: '/var/www/slides.kugaevsky.ru'
         repositoryUrl: 'git@github.com:kugaevsky/slides.kugaevsky.ru.git'
         dirToCopy: 'public'
@@ -36,7 +36,7 @@ module.exports = (shipit) ->
 
 
   shipit.blTask 'deploy:install:bower', ->
-    shipit.local("cd #{shipit.config.workspace} && bower install")
+    shipit.local("cd #{shipit.config.workspace} && bower install -f")
 
 
   # Compilation and build tasks
