@@ -10,6 +10,7 @@ path      = require 'path'
 plumber   = require 'gulp-plumber'
 server    = require 'gulp-server-livereload'
 through   = require 'through2'
+bower     = require 'gulp-bower'
 
 # Sass
 sass      = require 'gulp-sass'
@@ -40,10 +41,7 @@ gulp.task 'pug', ->
 
 gulp.task 'images', (done) ->
   gulp.src paths.images
-    .pipe imagemin
-      progressive: true
-      svgoPlugins: [{removeViewBox: true}]
-      use: [pngquant()]
+    .pipe imagemin(verbose: true)
     .pipe gulp.dest("./#{paths.output}/images")
 
 
@@ -52,12 +50,10 @@ gulp.task 'copy:favicon', (done) ->
     .pipe gulp.dest("./#{paths.output}")
 
 
-gulp.task 'bower:install', (done) ->
-  gulp.src ''
-    .pipe through.obj sh.exec('bower install')
+gulp.task 'bower', (done) -> bower()
 
 
-gulp.task 'serve', ['compile', 'watch'], ->
+gulp.task 'serve', ['compile'], ->
   gulp.src 'public'
     .pipe server
       livereload: true
@@ -67,7 +63,7 @@ gulp.task 'serve', ['compile', 'watch'], ->
 # Gulp watch and default tasks
 gulp.task 'copy', ['copy:favicon']
 gulp.task 'compile', ['pug', 'images', 'copy']
-gulp.task 'default', ['compile', 'watch']
+gulp.task 'default', ['bower', 'serve', 'watch']
 
 
 gulp.task 'watch', () ->

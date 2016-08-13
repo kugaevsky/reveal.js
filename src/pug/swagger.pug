@@ -1,0 +1,257 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title Documenting and testing APIs with Swagger
+    meta(name='description', content='')
+    meta(name='author', content='Nick Kugaevsky')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-status-bar-style', content='black-translucent')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    link(rel='stylesheet', href='lib/reveal.js/css/reveal.css')
+    link#theme(rel='stylesheet', href='lib/reveal.js/css/theme/blood.css')
+    // For syntax highlighting
+    link#highlight-theme(rel='stylesheet', href='lib/reveal-highlight-themes/styles/zenburn.css')
+  body
+    .reveal
+      // Any section element inside of this container is displayed as a slide
+      .slides
+        section(data-background="images/swagger-intro.jpg")
+          //- article(style='background-color: rgba(255, 255, 255, .5); padding: 4rem')
+          article(style='background-color: rgba(255, 255, 255, .5); padding: 4rem')
+            h2 Documenting and testing APIs with Swagger like a boss
+            p
+              small
+                a(href='http://kugaevsky.ru') Николай Кугаевский
+                |  /
+                a(href='http://dudes.io') dudes.io
+            p
+              small
+                a(href='https://it52.info') it52.info
+        section
+          section(data-transition='slide' data-markdown).
+            ## Documenting tools
+
+            * [API blueprint](https://apiblueprint.org/)
+            * [RAML](http://raml.org/)
+            * [Swagger](http://swagger.io/)
+
+          section(data-transition='slide' data-markdown).
+            ## [Open API initiative](https://openapis.org/) (November 5, 2015)
+
+            The Open API Initiative (OAI) was created by a consortium of forward-looking industry experts who recognize the immense value of standardizing on how REST APIs are described. As an open governance structure under the Linux Foundation, the OAI is focused on creating, evolving and promoting a vendor neutral description format. SmartBear Software is donating the Swagger Specification directly to the OAI as the basis of this Open Specification.
+
+          section(data-transition='slide' data-background="images/openapi-members.png" data-background-color="#fff").
+
+        section
+          section(data-transition='slide' data-markdown).
+            ## [OpenAPI Specification](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md)
+
+            * Meta
+            * Path, operation, and response
+            * Parameters
+            * Definitions
+            * Security
+          section(data-transition='slide')
+            h2 Meta
+
+            pre: code.hljs.yaml.
+              title: Swagger Sample App
+              description: This is a sample server Petstore server.
+              termsOfService: http://swagger.io/terms/
+              contact:
+                name: API Support
+                url: http://www.swagger.io/support
+                email: support@swagger.io
+              license:
+                name: Apache 2.0
+                url: http://www.apache.org/licenses/LICENSE-2.0.html
+              version: 1.0.1
+
+          section(data-transition='slide')
+            h2 Path, operation, and response
+
+            pre: code.hljs.yaml.
+              paths:
+                /pets:
+                  get:
+                    description: Returns all pets from the system that the user has access to
+                    produces:
+                    - application/json
+                    responses:
+                      '200':
+                        description: A list of pets.
+                        schema:
+                          type: array
+                          items:
+                            $ref: '#/definitions/pet'
+          section(data-transition='slide')
+            h2 Parameters
+
+            pre: code.hljs.yaml.
+              parameters:
+              - name: petId
+                in: path
+                description: ID of pet that needs to be updated
+                required: true
+                type: string
+              - name: name
+                in: formData
+                description: Updated name of the pet
+                required: false
+                type: string
+
+          section(data-transition='slide')
+            h2 Definitions
+
+            pre: code.hljs.yaml.
+              User:
+                type: object
+                required:
+                - id
+                - email
+                - name
+                properties:
+                  id:
+                    type: integer
+                  email:
+                    type: string
+                  name:
+                    type: string
+
+          section(data-transition='slide')
+            h2 Security
+
+            pre: code.hljs.yaml.
+              securityDefinitions:
+                api_key:
+                  type: apiKey
+                  name: Authorization
+                  in: header
+                  description: >-
+                    ## Authentication
+
+                    All API calls but secured with api token. Client **must** provide `Authorization` header with valid user token and email to make request. All requests **must** have HTTP header with following format.
+
+                        Token token="O70Z9WsG7tZkl6I5I9dfmwUWzVq/7AVurbX77gEScbUPUB+Yuu4b1ph1AfEh9rIUdTrXUhkDwWciARZjbhjfzw==", email="user@email.com"
+
+          section(data-transition='slide')
+            h2 Live example
+
+        section
+          section(data-transition='slide' data-markdown).
+            ## Swagger tools
+
+            * [Official](http://swagger.io/tools/)
+            * [Community](http://swagger.io/open-source-integrations/)
+          section(data-transition='slide' data-markdown).
+            ## Official
+
+            * [Swagger UI](http://petstore.swagger.io/)
+            * [Swagger Editor](http://editor.swagger.io/)
+          section(data-transition='slide' data-markdown).
+            ## Community
+
+            **Languages:** Clojure, D, Erlang, Go, Haskell, Java, Javascript, Typescript, .NET, Perl, PHP, Python, Ruby, Scala
+
+            **Tools:** linters, generators, UIs, Confluence publisher, and everything.
+
+
+        section
+          section(data-transition='slide' data-markdown).
+            ## Testing requirements
+
+            * YAML parser
+            * JSON schema validator
+            * Testing framework
+            * Some magic
+
+          section(data-transition='slide')
+            h2 Helper
+
+            pre: code.hljs.ruby.
+              RSpec::Matchers.define :match_response_schema do |path, meth, status|
+                match do |response|
+                  swagger_yaml = YAML.load_file(File.join(Rails.root, 'api.swagger.yml'))
+                  full_schema = swagger_yaml.resolve_model_definitions!(swagger_yaml['definitions'])
+                  schema = full_schema['paths'][path][meth.to_s]['responses'][status.to_s]['schema']
+                  JSON::Validator.validate!(schema, response.body, strict: true)
+                end
+              end
+
+              class Hash
+                def resolve_model_definitions!(definitions)
+                  if self.key?('$ref')
+                    model = self['$ref'].split('/').last
+                    definition = definitions[model]
+                    delete('$ref')
+                    definition.each_pair do |key, value|
+                      self[key] = value
+                    end
+                  end
+
+                  each_pair do |_, value|
+                    value.resolve_model_definitions!(definitions) if value.is_a? Hash
+                  end
+
+                  self
+                end
+              end
+
+
+          section(data-transition='slide')
+            h2 Request specs
+
+            pre: code.hljs.ruby.
+              describe 'Authenticate API user' do
+                let(:user) { FactoryGirl.create :user }
+
+                context 'with correct credentials' do
+                  before { post '/api/v1/sessions', user: { email: user.email, password: user.password } }
+
+                  it { expect(response).to have_http_status 201 }
+                  it { expect(response).to match_response_schema('/sessions/', :post, 201) }
+                end
+
+                context 'with wrong credentials' do
+                  before { post '/api/v1/sessions', user: { email: user.email, password: FFaker::Lorem.word } }
+
+                  it { expect(response).to have_http_status 401 }
+                  it { expect(response.body).to eq({ error: 'Wrong credentials' }.to_json) }
+                  it { expect(response).to match_response_schema('/sessions/', :post, 401) }
+                end
+              end
+
+        section
+          article(style='background: rgba(255,255,255,.5); padding: 4rem')
+            h2 Documenting and testing APIs with Swagger
+            p
+              a(href='http://slides.kugaevsky.ru/swagger.html') http://slides.kugaevsky.ru/
+            p
+              small
+                a(href='http://kugaevsky.ru') Николай Кугаевский
+                | (
+                a(href='https://dudes.io') dudes.io
+                | )
+
+    script(src='lib/reveal.js/lib/js/head.min.js')
+    script(src='lib/reveal.js/js/reveal.js')
+    script.
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal-js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'convex', // none/fade/slide/convex/concave/zoom
+        // Optional reveal-js plugins
+        dependencies: [
+        { src: 'lib/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'lib/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'lib/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'lib/reveal.js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'lib/reveal.js/plugin/zoom-js/zoom.js', async: true },
+        { src: 'lib/reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });

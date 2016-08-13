@@ -8,8 +8,8 @@ html(lang='en')
     meta(name='apple-mobile-web-app-capable', content='yes')
     meta(name='apple-mobile-web-app-status-bar-style', content='black-translucent')
     meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
-    link(rel='stylesheet', href='lib/reveal-js/css/reveal.css')
-    link#theme(rel='stylesheet', href='lib/reveal-js/css/theme/default.css')
+    link(rel='stylesheet', href='lib/reveal.js/css/reveal.css')
+    link#theme(rel='stylesheet', href='lib/reveal.js/css/theme/moon.css')
     // For syntax highlighting
     link#highlight-theme(rel='stylesheet', href='lib/reveal-highlight-themes/styles/monokai_sublime.css')
     // If the query includes 'print-pdf', include the PDF print sheet
@@ -18,7 +18,7 @@ html(lang='en')
       var link = document.createElement( 'link' );
       link.rel = 'stylesheet';
       link.type = 'text/css';
-      link.href = 'lib/reveal-js/css/print/pdf.css';
+      link.href = 'lib/reveal.js/css/print/pdf.css';
       document.getElementsByTagName( 'head' )[0].appendChild( link );
       }
     //if lt IE 9
@@ -34,8 +34,9 @@ html(lang='en')
           * [Gulp для сборки статики – Assets Pipeline with Gulp](gulp-assets-pipeline.html)
           * [Сахар и автосборкка в Ionic Framework](sweetest-ionic.html)
           * [Препарируем shipit.js — Shipit.js inside out](shipit-js-inside-out.html)
-    script(src='lib/reveal-js/lib/js/head.min.js')
-    script(src='lib/reveal-js/js/reveal.js')
+          * [Documenting and testing APIs with Swagger](swagger.html)
+    script(src='lib/reveal.js/lib/js/head.min.js')
+    script(src='lib/reveal.js/js/reveal.js')
     script.
       // Full list of configuration options available at:
       // https://github.com/hakimel/reveal-js#configuration
@@ -47,11 +48,11 @@ html(lang='en')
       transition: 'convex', // none/fade/slide/convex/concave/zoom
       // Optional reveal-js plugins
       dependencies: [
-      { src: 'lib/reveal-js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-      { src: 'lib/reveal-js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-      { src: 'lib/reveal-js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-      { src: 'lib/reveal-js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
-      { src: 'lib/reveal-js/plugin/zoom-js/zoom.js', async: true },
-      { src: 'lib/reveal-js/plugin/notes/notes.js', async: true }
+      { src: 'lib/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'lib/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'lib/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'lib/reveal.js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'lib/reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: 'lib/reveal.js/plugin/notes/notes.js', async: true }
       ]
       });

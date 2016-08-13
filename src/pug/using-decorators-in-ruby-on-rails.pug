@@ -8,17 +8,17 @@ html
     meta(name='apple-mobile-web-app-capable', content='yes')
     meta(name='apple-mobile-web-app-status-bar-style', content='black-translucent')
     meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
-    link(rel='stylesheet', href='lib/reveal-js/css/reveal.css')
-    link#theme(rel='stylesheet', href='lib/reveal-js/css/theme/default.css')
+    link(rel='stylesheet', href='lib/reveal.js/css/reveal.css')
+    link#theme(rel='stylesheet', href='lib/reveal.js/css/theme/league.css')
     // For syntax highlighting
-    link#highlight-theme(rel='stylesheet', href='lib/reveal-highlight-themes/styles/monokai_sublime.css')
+    link#highlight-theme(rel='stylesheet', href='/lib/reveal-highlight-themes/styles/arta.css')
     // If the query includes 'print-pdf', include the PDF print sheet
     script.
       if( window.location.search.match( /print-pdf/gi ) ) {
       var link = document.createElement( 'link' );
       link.rel = 'stylesheet';
       link.type = 'text/css';
-      link.href = 'lib/reveal-js/css/print/pdf.css';
+      link.href = 'lib/reveal.js/css/print/pdf.css';
       document.getElementsByTagName( 'head' )[0].appendChild( link );
       }
     //if lt IE 9
@@ -51,7 +51,7 @@ html
               |, not&nbsp;
               strong.fragment.highlight-red(data-fragment-index='1') procedures
             pre
-              code.hljs.ruby.
+              code.hljs.rails.
                 article
                   h3
                     = link_to post.title, post
@@ -222,8 +222,8 @@ html
             p
               small
                 a(href='http://it52.info') it52.info
-    script(src='lib/reveal-js/lib/js/head.min.js')
-    script(src='lib/reveal-js/js/reveal.js')
+    script(src='lib/reveal.js/lib/js/head.min.js')
+    script(src='lib/reveal.js/js/reveal.js')
     script.
       // Full list of configuration options available at:
       // https://github.com/hakimel/reveal-js#configuration
@@ -235,11 +235,11 @@ html
       transition: 'convex', // none/fade/slide/convex/concave/zoom
       // Optional reveal-js plugins
       dependencies: [
-      { src: 'lib/reveal-js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
-      { src: 'lib/reveal-js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-      { src: 'lib/reveal-js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
-      { src: 'lib/reveal-js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
-      { src: 'lib/reveal-js/plugin/zoom-js/zoom.js', async: true },
-      { src: 'lib/reveal-js/plugin/notes/notes.js', async: true }
+      { src: 'lib/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'lib/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'lib/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'lib/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'lib/reveal.js/plugin/zoom-js/zoom.js', async: true },
+      { src: 'lib/reveal.js/plugin/notes/notes.js', async: true }
       ]
       });
