@@ -1,9 +1,12 @@
+- var community = "JS NN"
+- var title = [community, "IT52"].join(' + ') + ' = &hearts;'
+
 doctype html
 html
   head
     meta(charset='utf-8')
-    title rannts + it52&heart;
-    meta(name='description', content='Сахар и автосборка в Ionic Framework')
+    title #{title}
+    meta(name='description', content=title)
     meta(name='author', content='Nick Kugaevsky')
     meta(name='apple-mobile-web-app-capable', content='yes')
     meta(name='apple-mobile-web-app-status-bar-style', content='black-translucent')
@@ -12,18 +15,76 @@ html
     link#theme(rel='stylesheet', href='lib/reveal.js/css/theme/beige.css')
     // For syntax highlighting
     link#highlight-theme(rel='stylesheet', href='lib/reveal-highlight-themes/styles/zenburn.css')
+
+    style.
+      .reveal .slide-background.present { opacity: .2 }
+      .reveal h1, .reveal h2, .reveal h3, .reveal h4, .reveal h5, .reveal h6 { font-family: "Ubuntu", "Arial", sans-serif; font-weight: 600; text-transform: initial}
+      * { font-family: "Ubuntu", "Arial", sans-serif }
   body
     .reveal
       // Any section element inside of this container is displayed as a slide
       .slides
-        section(data-markdown).
-          ## rannts + it52 = &hearts;
-          * Web – [https://www.it52.info](https://www.it52.info):
-            * RSS
-            * ICS
-          * Telegram:
-            * Channel → [@it52info](https://telegram.me/it52info)
-            * Bot → [@it52_bot](https://telegram.me/it52_bot)
+        section(data-markdown data-background="images/deer-horn.svg" data-background-size="contain").
+          ## #{title}
+
+          ### [www.it52.info](https://www.it52.info)
+
+          ### Telegram: [@it52info](https://telegram.me/it52info)
+
+          **#it52info**
+
+        section(data-markdown data-background="images/postcss.svg" data-background-size="contain").
+
+          ### Stylelint — как и зачем линтить CSS
+
+          _Андрей Ситник_
+
+          * Рассмотрим все линтеры для CSS
+          * На примере Stylelint и Stylefmt объясним, как правильно использовать линтер в организации коллектива
+
+
+          **#it52info**
+
+        section(data-markdown data-background="images/css3.svg" data-background-size="contain").
+
+          ### Привет, CSS Grid Layout
+
+          _Макаров Андрей_
+
+          * CSS3 Grid Layout – удобный механизм расположения контента по виртуальной сетке
+
+          **#it52info**
+
+        section(data-markdown data-background="images/mochajs.svg" data-background-size="contain").
+
+          ### Автоматическое тестирование front-end приложения
+
+          _Ангелов Михаил_
+
+          * Рассказ про варианты автоматических тестов SPA приложений
+          * Практические примеры unit, integration, end-2-end тестов
+
+          **#it52info**
+
+        section(data-markdown data-background="images/meteor.svg" data-background-size="contain").
+
+          ### Что осталось от Meteor.js?
+
+          _Павел Шалаев_
+
+          * В процессе своего развития платформа пошла по пути активной интеграции, а не замыкания в себе. Посмотрим, пошло ли это ей на пользу. Удалось ли решить проблемы и требования, предъявляемые профессиональным сообществом.
+
+          **#it52info**
+
+        section(data-markdown data-background="images/react.svg" data-background-size="contain").
+
+          ### Работа с анимациями в React Native
+
+          _Шрамко Антон_
+
+          * Подходы к анимациям, понимание того как они работают, дополнительные библиотеки по работе с анимациями
+
+          **#it52info**
 
     script(src='lib/reveal.js/lib/js/head.min.js')
     script(src='lib/reveal.js/js/reveal.js')
@@ -36,6 +97,10 @@ html
       history: true,
       center: true,
       transition: 'convex', // none/fade/slide/convex/concave/zoom
+      autoSlide: 10000,
+      loop: true,
+      transitionSpeed: 'slow',
+      backgroundTransition: 'zoom',
       // Optional reveal-js plugins
       dependencies: [
       { src: 'lib/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
