@@ -21,7 +21,6 @@ module.exports = (shipit) ->
     'deploy:init'
     'deploy:fetch'
     'deploy:link:node_modules'
-    'deploy:install:bower'
     'deploy:compile'
     'deploy:update'
     'deploy:publish'
@@ -33,10 +32,6 @@ module.exports = (shipit) ->
 
   shipit.blTask 'deploy:link:node_modules', ->
     shipit.local("cd #{shipit.config.workspace} && ln -nsf #{__dirname}/node_modules")
-
-
-  shipit.blTask 'deploy:install:bower', ->
-    shipit.local("cd #{shipit.config.workspace} && bower install -f")
 
 
   # Compilation and build tasks
