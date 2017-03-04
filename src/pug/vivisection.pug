@@ -1,0 +1,303 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title Angular vivisection
+    meta(name='description', content='')
+    meta(name='author', content='Nick Kugaevsky')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-status-bar-style', content='black-translucent')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    link(rel='stylesheet', href='lib/reveal.js/css/reveal.css')
+    link#theme(rel='stylesheet', href='lib/reveal.js/css/theme/blood.css')
+
+  body
+    .reveal
+      // Any section element inside of this container is displayed as a slide
+      .slides
+        section(data-background="images/islandofdrmoreau.jpg")
+          article(style='background-color: rgba(255, 255, 255, .5); padding: 4rem')
+            h2 Angular vivisection
+            p
+              small
+                a(href='https://t.me/kugaevsky') Николай Кугаевский
+                |&nbsp;для&nbsp;
+                a(href='https://t.me/js_nn') @js_nn
+            p
+              small
+                a(href='https://it52.info') it52.info
+                |&nbsp;/&nbsp;
+                a(href='https://dudes.io') dudes.io
+
+        section
+          section(data-transition='slide')
+            h2 History
+
+            p.fragment.fade-up: b Angular 1
+            p.fragment.fade-up v0.9.0 – 21 Oct 2010
+            p.fragment.fade-up v1.0.0 – 14 Jun 2012
+            p.fragment.fade-up: b Angular 2
+            p.fragment.fade-up 2.0.0-alpha.13 – 14 Mar 2015
+            p.fragment.fade-up 2.0.0 – 15 Sep 2016
+
+          section(data-transition='slide')
+            h2 Popularity
+
+            p.fragment.fade-up React – 61k ★
+            p.fragment.fade-up Angular 1 – 55k ★
+            p.fragment.fade-up Vue.js – 45k ★
+            p.fragment.fade-up Angular 2 – 21k ★
+            p.fragment.fade-up Ember – 18k ★
+            p.fragment.fade-up Riot – 11k ★
+
+        section
+          section(data-transition='slide')
+            h2 Dependencies
+
+            p
+              b Angular 1
+              pre: code "dependencies": {}
+
+            p
+              b Angular 2
+              pre: code.
+                "dependencies": {
+                  "core-js": "^2.4.1",
+                  "reflect-metadata": "^0.1.3",
+                  "rxjs": "^5.0.1",
+                  "zone.js": "^0.7.2" }
+
+
+          section(data-transition='slide')
+            h2 core-js
+
+            p.fragment.fade-up Modular standard library for JavaScript. Includes polyfills for ECMAScript 5, ECMAScript 6: promises, symbols, collections, iterators, typed arrays, ECMAScript 7+ proposals, setImmediate, etc. Some additional features such as dictionaries or extended partial application. You can require only needed features or use it without global namespace pollution.
+
+          section(data-transition='slide')
+            h2 reflect-metadata
+
+            ul
+              li.fragment.fade-up Decorators add the ability to augment a class and its members as the class is defined, through a declarative syntax.
+              li.fragment.fade-up Traceur attaches annotations to a static property on the class.
+              li.fragment.fade-up Languages like C# (.NET), and Java support attributes or annotations that add metadata to types, along with a reflective API for reading metadata.
+
+          section(data-transition='slide')
+            h2 RxJS
+
+            p.fragment.fade-up: a(href="http://reactivex.io/") reactivex.io
+
+          section(data-transition='slide')
+            h2 zone.js
+
+            p.fragment.fade-up A Zone is an execution context that persists across async tasks. You can think of it as thread-local storage for JavaScript VMs.
+
+        section
+          section(data-transition='slide' data-background="images/wat.jpg")
+            h2 Typescript
+
+          section(data-transition='slide')
+            h2 Typescript
+
+            p.fragment.fade-up C# in browser.
+            p.fragment.fade-up This page is not yet available in JavaScript. We recommend reading it in TypeScript.
+            p.fragment.fade-up Libraries in ts.
+            p.fragment.fade-up Compilation stack.
+
+        section(data-background="images/learning-curve.jpg" data-background-size="contain" data-background-color="#ffffff")
+
+        section
+          section(data-transition='slide' data-markdown).
+            ## What shall we do with the drunken sailor?
+
+            * Routes
+            * Controllers/Components
+            * Services
+            * Filters/Pipes
+
+          section(data-transition='slide')
+            h2 Routes - Angular 1 - js
+
+            pre: code.
+              angular.module('phoneApp').config(['$routeProvider',
+                function config($routeProvider) {
+                  $routeProvider.when('/phones', {
+                    url: '/phones'
+                    template: '<phone-list></phone-list>',
+                    controller: 'PhonesController',
+                    data: { title: 'Phones' }
+                  }).
+                  otherwise('/404');
+                }]
+              );
+
+          section(data-transition='slide')
+            h2 Routes - Angular 1 - coffee
+
+            pre: code.
+              Routes =
+                app:
+                  url: '/phones'
+                  template: '<phone-list></phone-list>'
+                  controller: 'PhonesController'
+                  data: { title: 'Phones' }
+
+              class AppConfig
+                @$inject: ['$routeProvider']
+                constructor: ($routeProvider) ->
+                  $routeProvider.when('/phones', Routes.app)
+
+              angular.module('phoneApp', []).config(AppConfig)
+
+          section(data-transition='slide')
+            h2 Routes - Angular 2 - ts
+
+            pre: code.
+              const appRoutes: Routes = [
+                {
+                  path: 'phones',
+                  component: PhoneList },
+                  data: { title: 'Phones' }
+                }
+              ];
+
+              @NgModule({
+                imports: [ RouterModule.forRoot(appRoutes)]
+              });
+
+          section(data-transition='slide')
+            h2 Routes - Angular 2 - coffee
+
+            pre: code.
+              Routes = [
+                {
+                  path: 'phones'
+                  component: PhoneList
+                  data: { title: 'Phones' }
+                }
+              ]
+
+              class AppModule
+                @annotations: [
+                  new Module({imports: [ RouterModule.forRoot(Routes) ]})
+                ]
+
+          section(data-transition='slide')
+            h2 Controller - Angular 1 - js
+
+            pre: code.
+              var phonecatApp = angular.module('phoneApp', []);
+
+              phoneApp.controller('PhonesController', function ($scope) {
+                $scope.phones = [
+                  {'name': 'Nexus S',
+                   'snippet': 'Fast just got faster with Nexus S.'
+                ];
+              });
+
+          section(data-transition='slide')
+            h2 Controller - Angular 1 - coffee
+
+            pre: code.
+              class PhonesController
+                @$inject: ['$scope']
+                constructor: (@scope) ->
+                  @scope.phones = [{
+                    name: 'Nexus S',
+                    snippet: 'Fast just got faster with Nexus S.'
+                  }]
+
+              phonecatApp = angular.module 'phoneApp', []
+              phoneApp.controller 'PhonesController', PhonesController
+
+
+          section(data-transition='slide')
+            h2 Controller - Angular 2 - ts
+
+            pre: code.
+              import { Component } from '@angular/core';
+              @Component({
+                selector: 'phone-list',
+                template: `<h1>{{title}}</h1>`
+              })
+              export class PhoneList {
+                title = 'Phones'
+                phones = [{
+                    name: 'Nexus S',
+                    snippet: 'Fast just got faster with Nexus S.'
+                }]
+              }
+
+
+          section(data-transition='slide')
+            h2 Controller - Angular 2 - coffee
+
+            pre: code.
+              class Documents
+                @annotations: [
+                  new Component
+                    selector: 'phone-list'
+                    template: '<h1>{{title}}</h1>'
+
+                constructor: ->
+                  @title = 'Phones'
+                  @phones = [{
+                    name: 'Nexus S'
+                    snippet: 'Fast just got faster with Nexus S.'
+                  }]
+
+        section
+          section(data-transition='slide')
+            h2 Future
+
+            p.fragment.fade-up Angular 1 – 14 Jun 2012
+            p.fragment.fade-up Angular 2 –  15 Sep 2016
+            p.fragment.fade-up Angular ? –  March 2017
+
+          section(data-transition='slide')
+            img(src="images/angular2-versions.png")
+
+          section(data-transition='slide' data-background="images/surprised-reaction-guy.png" data-background-size="contain" data-background-color="#ffffff")
+            article(style='background-color: rgba(0, 0, 0, .5); padding: 4rem')
+              h2 Angular 4
+
+              p.fragment.fade-up Semver
+
+          section(data-transition='slide' data-background="images/surprised-reaction-guy-left.png" data-background-size="contain" data-background-color="#ffffff")
+            article(style='background-color: rgba(0, 0, 0, .5); padding: 4rem')
+              h2 Angular 4
+
+              p.fragment.fade-up Angular
+
+
+        section
+          article(style='background: rgba(255,255,255,.5); padding: 4rem')
+            h2 Angular vivisection
+            p
+              a(href='http://slides.kugaevsky.ru/swagger.html') http://slides.kugaevsky.ru/
+            p
+              small
+                a(href='https://t.me/kugaevsky') @kugaevsky
+                |&nbsp;/&nbsp;
+                a(href='https://dudes.io') dudes.io
+
+    script(src='lib/reveal.js/lib/js/head.min.js')
+    script(src='lib/reveal.js/js/reveal.js')
+    script.
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal-js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'convex', // none/fade/slide/convex/concave/zoom
+        // Optional reveal-js plugins
+        dependencies: [
+        { src: 'lib/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'lib/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'lib/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'lib/reveal.js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'lib/reveal.js/plugin/zoom-js/zoom.js', async: true },
+        { src: 'lib/reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });

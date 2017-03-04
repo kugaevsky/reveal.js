@@ -1,9 +1,0 @@
-{
-  "name": "slides-kugaevsky-ru",
-  "private": "true",
-  "devDependencies": {},
-  "dependencies": {
-    "reveal.js": "^3.3.0",
-    "reveal-highlight-themes": "^8.4.0"
-  }
-}

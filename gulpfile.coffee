@@ -10,12 +10,6 @@ path      = require 'path'
 plumber   = require 'gulp-plumber'
 server    = require 'gulp-server-livereload'
 through   = require 'through2'
-bower     = require 'gulp-bower'
-
-# Sass
-sass      = require 'gulp-sass'
-minifyCss = require 'gulp-clean-css'
-prefix    = require 'gulp-autoprefixer'
 
 # Pug
 pug = require 'gulp-pug'
@@ -27,6 +21,7 @@ pngquant = require 'imagemin-pngquant'
 # Paths to source
 paths =
   pug: ['./src/pug/**/*.pug', '!./src/pug/**/_*.pug']
+  lib: ['node_modules/reveal.js/**/*']
   images: ['./src/images/**/*']
   output: 'public'
 
@@ -37,6 +32,10 @@ gulp.task 'pug', ->
     .pipe plumber()
     .pipe pug()
     .pipe gulp.dest("./#{paths.output}/")
+
+gulp.task 'copy:libs', ->
+  gulp.src paths.lib
+    .pipe gulp.dest("./#{paths.output}/lib/reveal.js")
 
 
 gulp.task 'images', (done) ->
@@ -50,9 +49,6 @@ gulp.task 'copy:favicon', (done) ->
     .pipe gulp.dest("./#{paths.output}")
 
 
-gulp.task 'bower', (done) -> bower()
-
-
 gulp.task 'serve', ['compile'], ->
   gulp.src 'public'
     .pipe server
@@ -61,9 +57,9 @@ gulp.task 'serve', ['compile'], ->
 
 
 # Gulp watch and default tasks
-gulp.task 'copy', ['copy:favicon']
+gulp.task 'copy', ['copy:libs', 'copy:favicon']
 gulp.task 'compile', ['pug', 'images', 'copy']
-gulp.task 'default', ['bower', 'serve', 'watch']
+gulp.task 'default', ['compile', 'serve', 'watch']
 
 
 gulp.task 'watch', () ->
