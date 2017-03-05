@@ -187,12 +187,12 @@ html
             pre: code.
               var phonecatApp = angular.module('phoneApp', []);
 
-              phoneApp.controller('PhonesController', function ($scope) {
-                $scope.phones = [
-                  {'name': 'Nexus S',
-                   'snippet': 'Fast just got faster with Nexus S.'
-                ];
-              });
+              phoneApp.controller('PhonesController', ['$scope', function ($scope) {
+                $scope.phones = [{
+                  'name': 'Nexus S',
+                  'snippet': 'Fast just got faster with Nexus S.'
+                }];
+              }]);
 
           section(data-transition='slide')
             h2 Controller - Angular 1 - coffee
@@ -206,12 +206,12 @@ html
                     snippet: 'Fast just got faster with Nexus S.'
                   }]
 
-              phonecatApp = angular.module 'phoneApp', []
+              phoneApp = angular.module 'phoneApp', []
               phoneApp.controller 'PhonesController', PhonesController
 
 
           section(data-transition='slide')
-            h2 Controller - Angular 2 - ts
+            h2 Component - Angular 2 - ts
 
             pre: code.
               import { Component } from '@angular/core';
@@ -229,12 +229,12 @@ html
 
 
           section(data-transition='slide')
-            h2 Controller - Angular 2 - coffee
+            h2 Component - Angular 2 - coffee
 
             pre: code.
-              class Documents
+              class PhoneList
                 @annotations: [
-                  new Component
+                  new ng.core.Component
                     selector: 'phone-list'
                     template: '<h1>{{title}}</h1>'
 
@@ -244,6 +244,138 @@ html
                     name: 'Nexus S'
                     snippet: 'Fast just got faster with Nexus S.'
                   }]
+
+
+          section(data-transition='slide')
+            h2 Service - Angular 1 - js
+
+            pre: code.
+              var phoneApp = angular.module('phoneApp', []);
+              phoneApp.factory('PhoneService', ['$http', function ($http) {
+                return {
+                  'getById': function (id) {
+                    $http.get('/phones' + id);
+                  }
+                }
+              }])
+
+          section(data-transition='slide')
+            h2 Service - Angular 1 - coffee
+
+            pre: code.
+              class PhoneService
+                @$inject: ['$http']
+
+                constructor: (@http) -> {}
+
+                getById: (id) -> @http.get("/phones/#{id}")
+
+              phoneApp = angular.module 'phoneApp', []
+              phoneApp.factory 'PhoneService', PhoneService
+
+
+          section(data-transition='slide')
+            h2 Service - Angular 2 - ts
+
+            pre: code.
+              import { Injectable } from '@angular/core';
+              import { Http } from '@angular/http';
+
+              @Injectable()
+              export class PhoneService {
+                constructor(private http: Http) { }
+
+                getById(id: number): {
+                  return this.http.get("/phones/" + id)
+                }
+              }
+
+
+          section(data-transition='slide')
+            h2 Service - Angular 2 - coffee
+
+            pre: code.
+              class PhoneService
+                @parameters: [ ng.http.Http ]
+
+                constructor: (@http) -> {}
+
+                getById: (id) -> @http.get("/phones/#{id}")
+
+
+          section(data-transition='slide')
+            h2 Filter - Angular 1 - js
+
+            pre: code.
+              var phoneApp = angular.module('phoneApp', []);
+              phoneApp.filter('reverse', function() {
+                return function(input, uppercase) {
+                  input = input || '';
+                  var out = '';
+                  for (var i = 0; i < input.length; i++) {
+                    out = input.charAt(i) + out;
+                  }
+
+                  // conditional based on optional argument
+                  if (uppercase) {
+                    out = out.toUpperCase();
+                  }
+                  return out;
+                }
+              });
+
+          section(data-transition='slide')
+            h2 Filter - Angular 1 - coffee
+
+            pre: code.
+              class ReverseFilter
+                constructor: () -> return @applyFilter
+                applyFilter: (input = '', uppercase = false) ->
+                  out = ''
+                  for i in [0..(input.length-1)]
+                    out = input.charAt(i) + out
+                  out = out.toUpperCase() if uppercase
+                  out
+
+              phoneApp = angular.module 'phoneApp', []
+              phoneApp.filter 'reverse', ReverseFilter
+
+          section(data-transition='slide')
+            h2 Pipe - Angular 2 - ts
+
+            pre: code.
+              import { Pipe, PipeTransform } from '@angular/core';
+
+              @Pipe({name: 'reverse'})
+              export class ReversePipe implements PipeTransform {
+                transform(value = '', uppercase = false):  {
+                  let out = '';
+                  for (var i = 0; i < input.length; i++) {
+                    out = input.charAt(i) + out;
+                  }
+
+                  // conditional based on optional argument
+                  if (uppercase) {
+                    out = out.toUpperCase();
+                  }
+                  return out;
+                }
+              }
+
+
+          section(data-transition='slide')
+            h2 Pipe - Angular 2 - coffee
+
+
+            pre: code.
+              class ReversePipe
+                @annotations: [ new ng.core.Pipe({ name: 'reverse' }) ]
+                transform: (input = '', uppercase = false) ->
+                  out = ''
+                  for i in [0..(input.length-1)]
+                    out = input.charAt(i) + out
+                  out = out.toUpperCase() if uppercase
+                  out
 
         section
           section(data-transition='slide')
