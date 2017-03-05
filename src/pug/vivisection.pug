@@ -185,7 +185,7 @@ html
             h2 Controller - Angular 1 - js
 
             pre: code.
-              var phonecatApp = angular.module('phoneApp', []);
+              var phoneApp = angular.module('phoneApp', []);
 
               phoneApp.controller('PhonesController', ['$scope', function ($scope) {
                 $scope.phones = [{
@@ -237,6 +237,7 @@ html
                   new ng.core.Component
                     selector: 'phone-list'
                     template: '<h1>{{title}}</h1>'
+                ]
 
                 constructor: ->
                   @title = 'Phones'
