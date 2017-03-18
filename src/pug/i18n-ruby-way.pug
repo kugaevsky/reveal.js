@@ -1,0 +1,239 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    title I18n ruby way
+    meta(name='description', content='')
+    meta(name='author', content='Nick Kugaevsky')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-status-bar-style', content='black-translucent')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
+    link(rel='stylesheet', href='lib/reveal.js/css/reveal.css')
+    link#theme(rel='stylesheet', href='lib/reveal.js/css/theme/blood.css')
+
+  body
+    .reveal
+      // Any section element inside of this container is displayed as a slide
+      .slides
+        section
+          article(style='background-color: rgba(255, 255, 255, .5); padding: 4rem')
+            h2 I18n ruby way
+            p
+              small
+                a(href='https://t.me/kugaevsky') Николай Кугаевский
+                |&nbsp;для&nbsp;
+                a(href='https://t.me/rannts') @rannts
+            p
+              small
+                a(href='https://it52.info') it52.info
+                |&nbsp;/&nbsp;
+                a(href='https://dudes.io') dudes.io
+
+        section
+          section(data-transition='slide')
+            h2 No gettext
+
+            p I18n by Sven Fuchs
+            p: a(href="https://github.com/svenfuchs/i18n") svenfuchs/i18n
+
+            pre: code.
+              gem 'i18n'
+              I18n.locale = :ru
+
+          section(data-transition='slide')
+            h2 Features
+
+            p.fragment.fade-up YAML
+            p.fragment.fade-up Keys
+            p.fragment.fade-up Scopes
+            p.fragment.fade-up Interpolation
+            p.fragment.fade-up Transliteration
+            p.fragment.fade-up Pluralization
+            p.fragment.fade-up l10n
+
+        section
+          section(data-transition='slide')
+            h2 YAML
+
+            pre: code.
+              # config/locales/ru.yml
+              ru:
+                title: Интернационализация
+                statuses:
+                - Активные
+                - Отключённые
+                - Архив
+
+              # app/views/my_view.html.slim
+              = t('title')                # -> Интернационализация
+              = t('statuses')[0]          # -> Активные
+              = t('statuses').join(', ')  # -> Aктивные, Отключённые, Архив
+
+          section(data-transition='slide')
+            h2 Keys
+
+            pre: code.
+              # config/locales/ru.yml
+              ru:
+                statuses: &statuses_hash
+                  active: Активные
+                  disabled: Отключённые
+                  archived: Архив
+
+                new_statuses:
+                  <<: *statuses_hash
+                  additional: Дополнительные
+
+              # app/views/my_view.html.slim
+              = t('statuses.active')            # -> Активные
+              = t('statuses').values.join(', ') # -> Aктивные, Отключённые, Архив
+
+          section(data-transition='slide')
+            h2 And scopes
+
+            pre: code.
+              # app/views/my_view.html.slim
+              - current_status = 'active'
+              = t("statuses.\#{current_status}")           # -> Активные
+              = t(['statuses', current_status].join('.')) # -> Активные
+              = t(current_status, scope: 'status')        # -> Активные
+
+          section(data-transition='slide')
+            h2 Interpolation
+
+            pre: code.
+              # config/locales/ru.yml
+              ru:
+                error:
+                  title: 'Опаньки, ошибочка вышла.'
+                  description: "Вот такая: '%{error_name}' c кодом %{error_code}."
+
+              # app/views/my_view.html.slim
+              = t('error.type')         # -> Опаньки, ошибочка вышла.
+              = t('error.description', error_name: 'Ошибка сервера', error_code: 500)
+              # -> "Вот такая: 'Ошибка сервера' c кодом 500."
+
+          section(data-transition='slide')
+            h2 Interpolation
+
+            pre: code.
+              # config/locales/ru.yml
+              ru:
+                error:
+                  title: 'Опаньки, ошибочка вышла.'
+                  description: "Вот такая: '%{error_name}' c кодом %{error_code}."
+                errors:
+                  server: Ошибка сервера
+
+              # app/views/my_view.html.slim
+              = t('error.type')         # -> Опаньки, ошибочка вышла.
+              = t('error.description', error_name: t('errors.server'), error_code: 500)
+              # -> "Вот такая: 'Ошибка сервера' c кодом 500."
+
+          section(data-transition='slide')
+            h2 Transliteration
+
+            pre: code.
+              # config/locales/ru.yml
+              i18n:
+                transliterate:
+                  rule:
+                    ю: "yu"
+                    я: "ya"
+
+              # app/views/my_view.html.slim
+              = I18n.transliterate('Коля') # -> Kolya
+
+          section(data-transition='slide')
+            h2 Pluralization
+
+            pre: code.
+              # config/locales/ru.yml
+              ru:
+                statuses:
+                - "%{count} статус"
+                - "%{count} статусов"
+
+              # app/views/my_view.html.slim
+              = t('statuses', count: 1) # -> 1 статус
+              = t('statuses', count: 5) # -> 5 статусов
+
+          section(data-transition='slide')
+            h2 LAMBDAS!!!
+
+            pre: code.
+              # config/locales/ru.yml
+              ru:
+                salutation: lambda { |key, options| options[:gender] == 'm' ? "Г-н %{options[:name]}" : "Г-жа %{options[:name]}" }
+
+              # app/views/my_view.html.slim
+              = t('salutation', gender: 'm', name: 'Кугаевский') # -> Г-н Кугаевский
+
+        section
+          section(data-transition='slide')
+            h2 l10n - date
+
+            pre: code.
+              # config/locales/datetime.yml
+              ru:
+                date:
+                  formats:
+                    default: "%d.%m.%Y"
+                    short: "%d %b"
+                    long: "%d %B %Y"
+
+              # app/views/my_view.html.slim
+              - current_date = Date.new
+
+              = l(current_date)                 # -> 18.03.2017
+              = l(current_date, format: 'long') # -> 18 марта 2017
+
+          section(data-transition='slide')
+            h2 l10n - time
+
+            pre: code.
+              # config/locales/datetime.yml
+              ru:
+                time:
+                  formats:
+                    default: "%e %B %Y %H:%M"
+                    full: "%e %B %Y %H:%M:%S"
+
+              # app/views/my_view.html.slim
+              - current_time = DateTime.new
+
+              = l(current_time)                 # -> 18 марта 2017 15:01
+              = l(current_time, format: 'full') # -> 18 марта 2017 15:01:59
+
+        section
+          article(style='background: rgba(255,255,255,.5); padding: 4rem')
+            h2 I18n ruby way
+            p
+              a(href='http://slides.kugaevsky.ru') http://slides.kugaevsky.ru
+            p
+              small
+                a(href='https://t.me/kugaevsky') @kugaevsky
+                |&nbsp;/&nbsp;
+                a(href='https://dudes.io') dudes.io
+
+    script(src='lib/reveal.js/lib/js/head.min.js')
+    script(src='lib/reveal.js/js/reveal.js')
+    script.
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal-js#configuration
+      Reveal.initialize({
+        controls: true,
+        progress: true,
+        history: true,
+        center: true,
+        transition: 'convex', // none/fade/slide/convex/concave/zoom
+        // Optional reveal-js plugins
+        dependencies: [
+        { src: 'lib/reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+        { src: 'lib/reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'lib/reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+        { src: 'lib/reveal.js/plugin/highlight/highlight.js', async: true, condition: function() { return !!document.querySelector( 'pre code' ); }, callback: function() { hljs.initHighlightingOnLoad(); } },
+        { src: 'lib/reveal.js/plugin/zoom-js/zoom.js', async: true },
+        { src: 'lib/reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
