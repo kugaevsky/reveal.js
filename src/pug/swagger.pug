@@ -10,6 +10,7 @@ html
     meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no')
     link(rel='stylesheet', href='lib/reveal.js/css/reveal.css')
     link#theme(rel='stylesheet', href='lib/reveal.js/css/theme/blood.css')
+    link(rel='stylesheet', href='lib/reveal.js/lib/css/zenburn.css')
 
   body
     .reveal
@@ -31,6 +32,7 @@ html
           section(data-transition='slide' data-markdown).
             ## Documenting tools
 
+            * [Apiary](https://apiary.io/)
             * [API blueprint](https://apiblueprint.org/)
             * [RAML](http://raml.org/)
             * [Swagger](http://swagger.io/)
@@ -40,7 +42,7 @@ html
 
             The Open API Initiative (OAI) was created by a consortium of forward-looking industry experts who recognize the immense value of standardizing on how REST APIs are described. As an open governance structure under the Linux Foundation, the OAI is focused on creating, evolving and promoting a vendor neutral description format. SmartBear Software is donating the Swagger Specification directly to the OAI as the basis of this Open Specification.
 
-          section(data-transition='slide' data-background="images/openapi-members.png" data-background-color="#fff").
+          section(data-transition='slide' data-background="images/openapi-members.png" data-background-color="#f6f6f6" data-background-size="contain")
 
         section
           section(data-transition='slide' data-markdown).
@@ -68,37 +70,23 @@ html
               version: 1.0.1
 
           section(data-transition='slide')
-            h2 Path, operation, and response
+            h2 Security
 
-            pre: code.hljs.yaml.
-              paths:
-                /pets:
-                  get:
-                    description: Returns all pets from the system that the user has access to
-                    produces:
-                    - application/json
-                    responses:
-                      '200':
-                        description: A list of pets.
-                        schema:
-                          type: array
-                          items:
-                            $ref: '#/definitions/pet'
-          section(data-transition='slide')
-            h2 Parameters
+            pre: code.yaml.
+              securityDefinitions:
+                api_key:
+                  type: apiKey
+                  name: Authorization
+                  in: header
+                  description: >-
+                    ## Authentication
 
-            pre: code.hljs.yaml.
-              parameters:
-              - name: petId
-                in: path
-                description: ID of pet that needs to be updated
-                required: true
-                type: string
-              - name: name
-                in: formData
-                description: Updated name of the pet
-                required: false
-                type: string
+                    All API calls but secured with api token. Client **must**
+                    provide `Authorization` header with valid user token and
+                    email to make request. All requests **must** have HTTP
+                    header with following format.
+
+                        Token token="O70Z9WsG7tZkl6I5I9dfmwUWzVq/7AVurbX77gEScbUPUB+Yuu4b1ph1AfEh9rIUdTrXUhkDwWciARZjbhjfzw==", email="user@email.com"
 
           section(data-transition='slide')
             h2 Definitions
@@ -119,23 +107,106 @@ html
                     type: string
 
           section(data-transition='slide')
-            h2 Security
+            h2 Request
 
-            pre: code.hljs.yaml.
-              securityDefinitions:
-                api_key:
-                  type: apiKey
-                  name: Authorization
-                  in: header
-                  description: >-
-                    ## Authentication
+            p
+              span.fragment.highlight-red(data-fragment-index="2") GET
+              span &nbsp;
+              span.fragment.highlight-green(data-fragment-index="1") /pets
+              span.fragment.highlight-blue(data-fragment-index="3") /1
+              span.fragment.highlight-green(data-fragment-index="1") /photos
+              span.fragment.highlight-blue(data-fragment-index="3") ?month=january
 
-                    All API calls but secured with api token. Client **must** provide `Authorization` header with valid user token and email to make request. All requests **must** have HTTP header with following format.
-
-                        Token token="O70Z9WsG7tZkl6I5I9dfmwUWzVq/7AVurbX77gEScbUPUB+Yuu4b1ph1AfEh9rIUdTrXUhkDwWciARZjbhjfzw==", email="user@email.com"
 
           section(data-transition='slide')
-            h2 Live example
+            h2 Path
+
+            pre: code.hljs.yaml.
+              paths:
+                /pets:
+                  - ...
+                /users:
+                  - ...
+                /photos
+                  - ...
+
+          section(data-transition='slide')
+            h2 Method
+
+            pre: code.hljs.yaml.
+                /pets:
+                  get:
+                    description: Returns all pets from the system that the user has access to
+                    produces:
+                    - application/json
+                    responses:
+                      - ...
+                  post:
+                    description: Creates new pets instance
+                    produces:
+                    - application/json
+                    responses:
+                      - ...
+
+          section(data-transition='slide')
+            h2 Response
+
+            pre: code.hljs.yaml.
+              responses:
+                '200':
+                  description: A list of pets.
+                  schema:
+                    type: array
+                    items:
+                      $ref: '#/definitions/pet'
+
+                '503':
+                  description: Server error
+                  schema:
+                    type: object
+                    properties:
+                      $ref: '#/definitions/error'
+
+          section(data-transition='slide')
+            h2 Parameters
+
+            pre: code.hljs.yaml.
+              parameters:
+              - name: petId
+                in: path
+                description: ID of pet that needs to be updated
+                required: true
+                type: string
+              - name: name
+                in: formData
+                description: Updated name of the pet
+                required: false
+                type: string
+
+
+          section(data-transition='slide')
+            h2 All together
+
+            pre: code.hljs.yaml.
+              paths:
+                /pets/{petId}:
+                  get:
+                    parameters:
+                    - name: petId
+                      in: path
+                      description: ID of pet that needs to be updated
+                      required: true
+                      type: string
+                    responses:
+                      '200':
+                        description:
+                        schema:
+                          type: object
+                          properties:
+                            $ref: '#/definitions/pet'
+
+
+        section(data-transition='slide' data-background="images/wait-for-it-swagger.jpg" data-background-color="#fff" data-background-size="contain")
 
         section
           section(data-transition='slide' data-markdown).
